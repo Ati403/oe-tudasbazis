@@ -1,0 +1,19 @@
+@page "/counter"
+@rendermode InteractiveWebAssembly
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private string currentCount = string.Empty;
+
+    private async Task IncrementCount()
+    {
+        currentCount = await testservice.Test();
+    }
+}
