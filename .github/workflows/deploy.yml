@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-        DOTNET_ROOT: /src/OE.Tudasbazis/
+        SOLUTION_LOCATION: ./src/OE.Tudasbazis/
     steps:
       - uses: actions/checkout@v4
 
@@ -21,16 +21,16 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release ${{env.DOTNET_ROOT}}
+        run: dotnet build --configuration Release ${{env.SOLUTION_LOCATION}}
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}
+        run: dotnet publish -c Release -o ${{env.SOLUTION_LOCATION}}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}
+          path: ${{env.SOLUTION_LOCATION}}
 
   deploy:
     runs-on: windows-latest
