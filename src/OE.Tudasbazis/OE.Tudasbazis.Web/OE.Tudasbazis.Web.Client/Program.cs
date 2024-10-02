@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using OE.Tudasbazis.Web.Client.Services;
+//using OE.Tudasbazis.Web.Client.Services;
 
 internal class Program
 {
