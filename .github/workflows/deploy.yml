@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-        DOTNET_ROOT: /src/OE.Tudasbazis
+        DOTNET_ROOT: /src/OE.Tudasbazis/
     steps:
       - uses: actions/checkout@v4
 
