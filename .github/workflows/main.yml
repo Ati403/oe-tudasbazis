@@ -20,10 +20,10 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build ./src/OE.Tudasbazis/OE.Tudasbazis.Web/ --configuration Release
+        run: dotnet build ./src/OE.Tudasbazis/OE.Tudasbazis.Web/OE.Tudasbazis.Web/ --configuration Release
 
       - name: Publish with dotnet
-        run: dotnet publish ./src/OE.Tudasbazis/OE.Tudasbazis.Web/ -c Release -o ${{ env.DOTNET_ROOT }}/publish
+        run: dotnet publish ./src/OE.Tudasbazis/OE.Tudasbazis.Web/OE.Tudasbazis.Web/ -c Release -o ${{ env.DOTNET_ROOT }}/publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
