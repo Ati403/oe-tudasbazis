@@ -1,3 +1,5 @@
+using OE.Tudasbazis.Web;
+
 internal class Program
 {
 	private static void Main(string[] args)
@@ -14,6 +16,8 @@ internal class Program
 		{
 			BaseAddress = new Uri("Https://localhost:7165")
 		});
+
+		builder.Services.BindServices(builder.Configuration);
 
 		var app = builder.Build();
 
