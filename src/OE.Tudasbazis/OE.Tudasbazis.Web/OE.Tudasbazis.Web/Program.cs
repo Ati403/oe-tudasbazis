@@ -18,7 +18,7 @@ internal class Program
 		builder.Services.AddScoped(http => new HttpClient
 		{
 			BaseAddress = new Uri("Https://localhost:7165")
-		}) ;
+		});
 
 		var app = builder.Build();
 
