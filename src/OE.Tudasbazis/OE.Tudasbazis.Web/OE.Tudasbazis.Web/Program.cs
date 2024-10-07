@@ -1,5 +1,4 @@
-using OE.Tudasbazis.Web.Client.Pages;
-//using OE.Tudasbazis.Web.Client.Services;
+using OE.Tudasbazis.Web;
 using OE.Tudasbazis.Web.Components;
 
 internal class Program
@@ -9,7 +8,6 @@ internal class Program
 
 		var builder = WebApplication.CreateBuilder(args);
 
-		// Add services to the container.
 		builder.Services.AddControllers();
 		builder.Services.AddRazorComponents()
 			.AddInteractiveWebAssemblyComponents();
@@ -22,7 +20,6 @@ internal class Program
 
 		var app = builder.Build();
 
-		// Configure the HTTP request pipeline.
 		if (app.Environment.IsDevelopment())
 		{
 			app.UseWebAssemblyDebugging();
