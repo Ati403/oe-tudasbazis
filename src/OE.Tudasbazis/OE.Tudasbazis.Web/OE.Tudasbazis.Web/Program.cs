@@ -1,6 +1,3 @@
-using OE.Tudasbazis.Web;
-using OE.Tudasbazis.Web.Components;
-
 internal class Program
 {
 	private static void Main(string[] args)

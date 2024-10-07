@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+
 using OE.Tudasbazis.Domain.Entities;
 
 namespace OE.Tudasbazis.DataAccess

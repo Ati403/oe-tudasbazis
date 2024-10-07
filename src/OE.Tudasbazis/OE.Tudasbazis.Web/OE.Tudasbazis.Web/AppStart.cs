@@ -1,7 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+
 using OE.Tudasbazis.Application.Settings;
 using OE.Tudasbazis.DataAccess;
 using OE.Tudasbazis.Logic;
-using System.ComponentModel.DataAnnotations;
 
 namespace OE.Tudasbazis.Web
 {
