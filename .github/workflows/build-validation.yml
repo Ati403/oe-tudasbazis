@@ -10,13 +10,12 @@ on:
 env:
   DOTNET_VERSION: '8.x'
   SOLUTION_LOCATION: './src/OE.Tudasbazis/'
-  EDITORCONFIG_LOCATION: './src/.editorconfig/'
 
 jobs:
   build:
 
-    name: build-${{build-validation}}
-    runs-on: ${{windows.latest}}
+    name: build .NET app
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -40,7 +39,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Restore dependencies
       run: dotnet restore ${{ env.SOLUTION_LOCATION }}
     - name: Format
