@@ -35,7 +35,7 @@ internal class Program
 		app.UseStaticFiles();
 		app.UseAntiforgery();
 
-		app.MapRazorComponents<App>()
+		app.MapRazorComponents<OE.Tudasbazis.Web.Components.App>()
 			.AddInteractiveWebAssemblyRenderMode()
 			.AddAdditionalAssemblies(typeof(OE.Tudasbazis.Web.Client._Imports).Assembly);
 
