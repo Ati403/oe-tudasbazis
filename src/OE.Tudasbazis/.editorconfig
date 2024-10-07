@@ -8,8 +8,8 @@ indent_style = tab
 #### .NET Coding Conventions ####
 
 # Organize usings
-dotnet_separate_import_directive_groups = false
-dotnet_sort_system_directives_first = false
+dotnet_separate_import_directive_groups = true
+dotnet_sort_system_directives_first = true
 file_header_template = unset
 
 # this. and Me. preferences
@@ -250,3 +250,5 @@ csharp_style_expression_bodied_indexers = true:silent
 csharp_style_expression_bodied_accessors = true:silent
 csharp_style_expression_bodied_lambdas = true:suggestion
 csharp_style_expression_bodied_local_functions = false:silent
+
+dotnet_diagnostic.IDE0005.severity = warning

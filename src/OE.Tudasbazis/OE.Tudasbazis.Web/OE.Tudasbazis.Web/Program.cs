@@ -1,7 +1,3 @@
-using OE.Tudasbazis.Web.Client.Pages;
-//using OE.Tudasbazis.Web.Client.Services;
-using OE.Tudasbazis.Web.Components;
-
 internal class Program
 {
 	private static void Main(string[] args)
@@ -9,7 +5,6 @@ internal class Program
 
 		var builder = WebApplication.CreateBuilder(args);
 
-		// Add services to the container.
 		builder.Services.AddControllers();
 		builder.Services.AddRazorComponents()
 			.AddInteractiveWebAssemblyComponents();
@@ -22,7 +17,6 @@ internal class Program
 
 		var app = builder.Build();
 
-		// Configure the HTTP request pipeline.
 		if (app.Environment.IsDevelopment())
 		{
 			app.UseWebAssemblyDebugging();
@@ -41,7 +35,7 @@ internal class Program
 		app.UseStaticFiles();
 		app.UseAntiforgery();
 
-		app.MapRazorComponents<App>()
+		app.MapRazorComponents<OE.Tudasbazis.Web.Components.App>()
 			.AddInteractiveWebAssemblyRenderMode()
 			.AddAdditionalAssemblies(typeof(OE.Tudasbazis.Web.Client._Imports).Assembly);
 
