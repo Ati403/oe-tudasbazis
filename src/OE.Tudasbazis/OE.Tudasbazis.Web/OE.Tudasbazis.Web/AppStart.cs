@@ -18,7 +18,7 @@ namespace OE.Tudasbazis.Web
 			services.AddDataAccess(connectionStrings!.DefaultConnection);
 
 			//Bind Business Logic Layer
-			services.AddLogic();
+			services.AddLogic(configuration);
 
 			return services;
 		}
