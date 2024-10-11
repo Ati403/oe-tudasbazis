@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OE.Tudasbazis.Application\OE.Tudasbazis.Application.csproj" />
     <ProjectReference Include="..\OE.Tudasbazis.DataAccess\OE.Tudasbazis.DataAccess.csproj" />
     <ProjectReference Include="..\OE.Tudasbazis.Domain\OE.Tudasbazis.Domain.csproj" />
