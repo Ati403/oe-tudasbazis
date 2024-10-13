@@ -87,6 +87,9 @@ internal class Program
 			.AddAdditionalAssemblies(typeof(OE.Tudasbazis.Web.Client._Imports).Assembly);
 
 		app.UseRouting();
+		
+		app.UseMiddleware<BusinessExceptionHandlingMiddleware>();
+
 		app.UseAuthentication();
 		app.UseAuthorization();
 
