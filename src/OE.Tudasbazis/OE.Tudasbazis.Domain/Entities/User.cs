@@ -1,3 +1,5 @@
+using OE.Tudasbazis.Application.Enums;
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,5 +16,8 @@ namespace OE.Tudasbazis.Domain.Entities
 
 		[Required, Length(8, 120)]
 		public string Password { get; set; } = string.Empty;
+
+		[Required]
+		public UserRole Role { get; set; } = UserRole.User;
 	}
 }

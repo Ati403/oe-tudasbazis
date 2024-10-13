@@ -9,5 +9,6 @@ namespace OE.Tudasbazis.DataAccess
 		public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
 		public DbSet<QuestionAnswerLog> QuestionAnswerLogs { get; set; }
+		public DbSet<User> Users { get; set; }
 	}
 }
