@@ -1,8 +1,6 @@
 
 using AutoMapper;
 
-using BC = BCrypt.Net.BCrypt;
-
 using Microsoft.EntityFrameworkCore;
 
 using OE.Tudasbazis.Application.DTOs.Requests;
@@ -11,6 +9,8 @@ using OE.Tudasbazis.Application.Exceptions;
 using OE.Tudasbazis.Application.Services;
 using OE.Tudasbazis.DataAccess;
 using OE.Tudasbazis.Domain.Entities;
+
+using BC = BCrypt.Net.BCrypt;
 
 namespace OE.Tudasbazis.Logic.Services
 {

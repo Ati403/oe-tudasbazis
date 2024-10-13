@@ -1,7 +1,7 @@
-using OE.Tudasbazis.Application.Enums;
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
+using OE.Tudasbazis.Application.Enums;
 
 namespace OE.Tudasbazis.Domain.Entities
 {

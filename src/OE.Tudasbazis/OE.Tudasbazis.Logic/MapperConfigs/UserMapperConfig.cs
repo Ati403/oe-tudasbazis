@@ -1,10 +1,10 @@
 using AutoMapper;
 
-using BC = BCrypt.Net.BCrypt;
-
 using OE.Tudasbazis.Application.DTOs.Requests;
 using OE.Tudasbazis.Application.DTOs.Responses;
 using OE.Tudasbazis.Domain.Entities;
+
+using BC = BCrypt.Net.BCrypt;
 
 namespace OE.Tudasbazis.Logic.MapperConfigs
 {

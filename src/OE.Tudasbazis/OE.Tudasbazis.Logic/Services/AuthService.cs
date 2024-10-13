@@ -32,7 +32,7 @@ namespace OE.Tudasbazis.Logic.Services
 		public async Task<JwtDto> LoginUserAsync(LoginOrRegisterRequestDto loginRequestDto)
 		{
 			var loggedInUser = await _userService.AuthenticateUserAsync(loginRequestDto);
-			
+
 			string token = _tokenService.GenerateToken(loggedInUser);
 
 			var jwtDto = new JwtDto
