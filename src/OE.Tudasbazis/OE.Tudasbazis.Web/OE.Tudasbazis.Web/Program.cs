@@ -1,12 +1,5 @@
-using System.Reflection;
-using System.Text;
-
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-
-using OE.Tudasbazis.Application.Settings;
 using OE.Tudasbazis.Web;
+using OE.Tudasbazis.Web.Middlewares;
 
 internal class Program
 {
@@ -27,40 +20,9 @@ internal class Program
 
 		builder.Services.AddHttpClient();
 
-					},
-					new List<string>()
-				  }
-				});
-			//var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-			//var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-			//c.IncludeXmlComments(xmlPath);
-		});
-
-		builder.Services.AddScoped(http => new HttpClient
-		{
-			BaseAddress = new Uri("Https://localhost:7165")
-		});
-
+		builder.Services.BindSwagger();
+		builder.Services.BindOptions(builder.Configuration);
 		builder.Services.BindServices(builder.Configuration);
-
-		builder.Services.AddOptions<JwtSettings>().Bind(builder.Configuration.GetSection(JwtSettings.Section));
-
-		builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-			.AddJwtBearer(options =>
-			{
-				options.TokenValidationParameters = new TokenValidationParameters
-				{
-					ValidateIssuer = true,
-					ValidateAudience = true,
-					ValidateLifetime = true,
-					ValidateIssuerSigningKey = true,
-					ValidIssuer = builder.Configuration["Jwt:Issuer"],
-					ValidAudience = builder.Configuration["Jwt:Audience"],
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"])),
-					ClockSkew = TimeSpan.Zero,
-				};
-			});
-		builder.Services.AddAuthorization();
 
 		var app = builder.Build();
 
@@ -80,7 +42,6 @@ internal class Program
 		app.UseHttpsRedirection();
 
 		app.UseStaticFiles();
-		app.UseAntiforgery();
 
 		app.MapRazorComponents<OE.Tudasbazis.Web.Components.App>()
 			.AddInteractiveWebAssemblyRenderMode()
@@ -92,6 +53,8 @@ internal class Program
 
 		app.UseAuthentication();
 		app.UseAuthorization();
+
+		app.UseAntiforgery();
 
 		app.MapControllers();
 
