@@ -14,6 +14,8 @@ namespace OE.Tudasbazis.Logic
 		{
 			services.AddSingleton<ITokenService, TokenService>();
 
+			services.AddScoped<IAuthService, AuthService>();
+			services.AddScoped<IUserService, UserService>();
 
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
