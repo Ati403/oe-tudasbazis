@@ -1,6 +1,5 @@
 using System.Reflection;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using OE.Tudasbazis.Application.Services;
@@ -10,7 +9,7 @@ namespace OE.Tudasbazis.Logic
 {
 	public static class DependencyInjection
 	{
-		public static IServiceCollection AddLogic(this IServiceCollection services, IConfiguration configuration)
+		public static IServiceCollection AddLogic(this IServiceCollection services)
 		{
 			services.AddSingleton<ITokenService, TokenService>();
 

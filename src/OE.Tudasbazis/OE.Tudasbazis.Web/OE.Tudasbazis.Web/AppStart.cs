@@ -24,7 +24,7 @@ namespace OE.Tudasbazis.Web
 			services.AddDataAccess(connectionStrings!.DefaultConnection);
 
 			//Bind Business Logic Layer
-			services.AddLogic(configuration);
+			services.AddLogic();
 
 			//Add Authentication and authorization
 			var jwtSettings = configuration
