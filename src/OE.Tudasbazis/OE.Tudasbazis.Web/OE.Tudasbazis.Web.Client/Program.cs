@@ -9,7 +9,7 @@ internal class Program
 
 		builder.Services.AddScoped(http => new HttpClient
 		{
-			BaseAddress = new Uri("Https://localhost:7165")
+			BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
 		});
 
 		await builder.Build().RunAsync();
