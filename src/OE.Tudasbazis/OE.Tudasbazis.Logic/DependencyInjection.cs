@@ -1,3 +1,5 @@
+using System.Reflection;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,9 @@ namespace OE.Tudasbazis.Logic
 		public static IServiceCollection AddLogic(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddSingleton<ITokenService, TokenService>();
+
+
+			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 			return services;
 		}
