@@ -42,9 +42,6 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: app url
-        run: echo "The app is available at ${{ steps.deploy-to-webapp.outputs.webapp-url }}"
-
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
@@ -68,3 +65,6 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AC216F740214413EBE64D9D70D5DAB99 }}
           package: .
+
+      - name: app url
+        run: echo "The app is available at ${{ steps.deploy-to-webapp.outputs.webapp-url }}"
