@@ -42,6 +42,9 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+      - name: app url
+        run: echo "The app is available at ${{ steps.deploy-to-webapp.outputs.webapp-url }}"
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
@@ -53,7 +56,7 @@ jobs:
           files: './appsettings.json'
         env:
          ConnectionStrings.DefaultConnection: ${{ secrets.DB_CONNECTION_STRING }}
-         Jwt.Secret: ${{ secrets.JWT_SECRET }}
+         Jwt.Key: ${{ secrets.JWT_SECRET }}
          Jwt.Issuer: ${{ env.url }}
          Jwt.Audience: ${{ env.url }}
 
