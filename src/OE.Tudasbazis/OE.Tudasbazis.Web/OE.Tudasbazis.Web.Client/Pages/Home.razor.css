@@ -1,0 +1,37 @@
+/* Styles for the page container */
+.page-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	height: 100vh;
+	padding: 2rem;
+}
+
+/* Styles for the text output (top) */
+.text-output {
+	flex-grow: 0;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	text-align: center;
+	width: 100%;
+}
+
+/* Styles for the text input (bottom) */
+.text-input {
+	flex-grow: 0;
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	width: 100%;
+}
+
+	/* Style for the input field */
+	.text-input input {
+		width: 300px;
+		padding: 0.5rem;
+		font-size: 1rem;
+		border-radius: 5px;
+		border: 1px solid #ccc;
+	}
