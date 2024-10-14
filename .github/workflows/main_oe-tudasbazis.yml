@@ -42,6 +42,9 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+      - name: app url
+        run: echo "The app is available at ${{ steps.deploy-to-webapp.outputs.webapp-url }}"
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
