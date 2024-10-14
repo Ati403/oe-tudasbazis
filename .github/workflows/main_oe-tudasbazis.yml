@@ -53,7 +53,7 @@ jobs:
           files: './appsettings.json'
         env:
          ConnectionStrings.DefaultConnection: ${{ secrets.DB_CONNECTION_STRING }}
-         Jwt.Secret: ${{ secrets.JWT_SECRET }}
+         Jwt.Key: ${{ secrets.JWT_SECRET }}
          Jwt.Issuer: ${{ env.url }}
          Jwt.Audience: ${{ env.url }}
 
