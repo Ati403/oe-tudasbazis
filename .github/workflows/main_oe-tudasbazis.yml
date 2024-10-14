@@ -53,6 +53,9 @@ jobs:
           files: './appsettings.json'
         env:
          ConnectionStrings.DefaultConnection: ${{ secrets.DB_CONNECTION_STRING }}
+         Jwt.Secret: ${{ secrets.JWT_SECRET }}
+         Jwt.Issuer: ${{ env.url }}
+         Jwt.Audience: ${{ env.url }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp

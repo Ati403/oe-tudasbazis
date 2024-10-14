@@ -16,9 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OE.Tudasbazis.DataAccess", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OE.Tudasbazis.Logic", "OE.Tudasbazis.Logic\OE.Tudasbazis.Logic.csproj", "{8C835770-15D3-4ACC-AA05-77DC1858464F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OE.Tudasbazis.Web", "OE.Tudasbazis.Web\OE.Tudasbazis.Web\OE.Tudasbazis.Web.csproj", "{CF8F24DA-C2EE-4D23-8FB3-B1A870388508}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OE.Tudasbazis.Web", "OE.Tudasbazis.Web\OE.Tudasbazis.Web\OE.Tudasbazis.Web.csproj", "{CF8F24DA-C2EE-4D23-8FB3-B1A870388508}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OE.Tudasbazis.Web.Client", "OE.Tudasbazis.Web\OE.Tudasbazis.Web.Client\OE.Tudasbazis.Web.Client.csproj", "{F42CC1C5-A5E3-495B-AAA3-BF5B1A94514D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OE.Tudasbazis.Web.Client", "OE.Tudasbazis.Web\OE.Tudasbazis.Web.Client\OE.Tudasbazis.Web.Client.csproj", "{F42CC1C5-A5E3-495B-AAA3-BF5B1A94514D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

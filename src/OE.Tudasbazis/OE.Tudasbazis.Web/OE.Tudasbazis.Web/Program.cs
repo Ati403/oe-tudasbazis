@@ -1,4 +1,5 @@
 using OE.Tudasbazis.Web;
+using OE.Tudasbazis.Web.Middlewares;
 
 internal class Program
 {
@@ -11,12 +12,16 @@ internal class Program
 		builder.Services.AddRazorComponents()
 			.AddInteractiveWebAssemblyComponents();
 		builder.Services.AddEndpointsApiExplorer();
-		builder.Services.AddSwaggerGen();
-		builder.Services.AddScoped(http => new HttpClient
-		{
-			BaseAddress = new Uri("Https://localhost:7165")
-		});
 
+		//builder.Services.AddScoped(http => new HttpClient
+		//{
+		//	BaseAddress = new Uri("Https://localhost:7165"),
+		//});
+
+		builder.Services.AddHttpClient();
+
+		builder.Services.BindSwagger();
+		builder.Services.BindOptions(builder.Configuration);
 		builder.Services.BindServices(builder.Configuration);
 
 		var app = builder.Build();
@@ -37,11 +42,19 @@ internal class Program
 		app.UseHttpsRedirection();
 
 		app.UseStaticFiles();
-		app.UseAntiforgery();
 
 		app.MapRazorComponents<OE.Tudasbazis.Web.Components.App>()
 			.AddInteractiveWebAssemblyRenderMode()
 			.AddAdditionalAssemblies(typeof(OE.Tudasbazis.Web.Client._Imports).Assembly);
+
+		app.UseRouting();
+
+		app.UseMiddleware<BusinessExceptionHandlingMiddleware>();
+
+		app.UseAuthentication();
+		app.UseAuthorization();
+
+		app.UseAntiforgery();
 
 		app.MapControllers();
 

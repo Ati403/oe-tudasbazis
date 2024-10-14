@@ -1,5 +1,6 @@
 @page "/counter"
 @rendermode InteractiveWebAssembly
+@inject HttpClient httpClient
 
 <PageTitle>Counter</PageTitle>
 
@@ -14,6 +15,6 @@
 
     private async Task IncrementCount()
     {
-        currentCount = string.Empty;
+        currentCount = httpClient.BaseAddress.ToString();
     }
 }

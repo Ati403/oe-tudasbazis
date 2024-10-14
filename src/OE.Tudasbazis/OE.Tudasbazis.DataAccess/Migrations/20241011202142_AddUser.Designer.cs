@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OE.Tudasbazis.DataAccess;
 
@@ -11,9 +12,11 @@ using OE.Tudasbazis.DataAccess;
 namespace OE.Tudasbazis.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241011202142_AddUser")]
+    partial class AddUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,9 +60,6 @@ namespace OE.Tudasbazis.DataAccess.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .IsRequired()
