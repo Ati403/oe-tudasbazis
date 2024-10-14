@@ -31,7 +31,8 @@ jobs:
       run: dotnet build --configuration Release --no-restore ${{ env.SOLUTION_LOCATION }}
 
   dotnet-format:
-
+    name: .NET format check
+    needs: build  
     runs-on: ubuntu-latest
 
     steps:
