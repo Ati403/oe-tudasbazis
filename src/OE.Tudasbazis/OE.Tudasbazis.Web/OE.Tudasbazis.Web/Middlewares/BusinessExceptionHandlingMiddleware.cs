@@ -1,3 +1,4 @@
+using OE.Tudasbazis.Application.DTOs.Responses;
 using OE.Tudasbazis.Application.Exceptions;
 
 namespace OE.Tudasbazis.Web.Middlewares
@@ -21,9 +22,9 @@ namespace OE.Tudasbazis.Web.Middlewares
 			{
 				context.Response.StatusCode = ex.StatusCode;
 				await context.Response.WriteAsJsonAsync(
-					new
+					new ErrorResponseDto
 					{
-						errors = new string[] { ex.Message }
+						Errors = [ex.Message]
 					});
 			}
 #if !DEBUG
@@ -31,9 +32,9 @@ namespace OE.Tudasbazis.Web.Middlewares
 			{
 				context.Response.StatusCode = 500;
 				await context.Response.WriteAsJsonAsync(
-					new
+					new ErrorResponseDto
 					{
-						errors = new string[] { "An unexpected error occured." }
+						Errors = ["An unexpected error occured."]
 					});
 			}
 #endif
