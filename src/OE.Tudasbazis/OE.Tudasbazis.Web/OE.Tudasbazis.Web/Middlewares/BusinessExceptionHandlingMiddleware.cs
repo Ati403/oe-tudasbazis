@@ -23,7 +23,7 @@ namespace OE.Tudasbazis.Web.Middlewares
 				await context.Response.WriteAsJsonAsync(
 					new
 					{
-						Errors = new string[] { ex.Message }
+						errors = new string[] { ex.Message }
 					});
 			}
 #if !DEBUG
@@ -33,7 +33,7 @@ namespace OE.Tudasbazis.Web.Middlewares
 				await context.Response.WriteAsJsonAsync(
 					new
 					{
-						Errors = new string[] { "An unexpected error occured." }
+						errors = new string[] { "An unexpected error occured." }
 					});
 			}
 #endif
