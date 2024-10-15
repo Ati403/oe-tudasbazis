@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-//using OE.Tudasbazis.Web.Client.Services;
+using Blazored.LocalStorage;
+using Blazored.Toast;
+using OE.Tudasbazis.Web.Client;
+using Microsoft.AspNetCore.Components.Authorization;
 
 internal class Program
 {
@@ -10,6 +14,18 @@ internal class Program
 		builder.Services.AddBlazorBootstrap();
 
 		builder.Services.AddScoped(http => new HttpClient
+		builder.RootComponents.Add<App>("#app");
+		builder.RootComponents.Add<HeadOutlet>("head::after");
+
+		builder.Services.AddBlazoredToast(); //Toast notifications
+
+		builder.Services.AddBlazoredLocalStorage();
+
+		builder.Services.AddAuthorizationCore();
+
+		builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+
+		builder.Services.AddScoped(sp => new HttpClient
 		{
 			BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
 		});
