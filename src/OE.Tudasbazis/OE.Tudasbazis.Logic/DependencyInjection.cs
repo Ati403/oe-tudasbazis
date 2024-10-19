@@ -15,6 +15,7 @@ namespace OE.Tudasbazis.Logic
 
 			services.AddScoped<IAuthService, AuthService>();
 			services.AddScoped<IUserService, UserService>();
+			services.AddScoped<IElasticService, ElasticService>();
 
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
