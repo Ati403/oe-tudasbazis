@@ -56,6 +56,9 @@ jobs:
          Jwt.Key: ${{ secrets.JWT_SECRET }}
          Jwt.Issuer: ${{ secrets.APP_URL }}
          Jwt.Audience: ${{ secrets.APP_URL }}
+         ElasticSearch.Url: ${{ secrets.ELASTICSEARCH_URL }}
+         ElasticSearch.IndexName: ${{ secrets.ELASTICSEARCH_INDEXNAME }}
+         ElasticSearch.ApiKey: ${{ secrets.ELASTICSEARCH_APIKEY }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
