@@ -99,6 +99,11 @@ namespace OE.Tudasbazis.Web
 		{
 			services.AddOptions<JwtSettings>().Bind(configuration.GetSection(JwtSettings.Section));
 
+			services.AddOptions<ElasticsearchSettings>()
+				.Bind(configuration.GetSection(ElasticsearchSettings.Section))
+				.ValidateDataAnnotations()
+				.ValidateOnStart();
+
 			return services;
 		}
 	}
