@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -18,5 +18,13 @@
     <ProjectReference Include="..\OE.Tudasbazis.DataAccess\OE.Tudasbazis.DataAccess.csproj" />
     <ProjectReference Include="..\OE.Tudasbazis.Domain\OE.Tudasbazis.Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+	<None Include="Services\EmbeddingService\Models\sentence_transformer.onnx" />
+  </ItemGroup>
+
+  <Target Name="CopyONNXModel" AfterTargets="Build">
+	<Copy SourceFiles="Services\EmbeddingService\Models\sentence_transformer.onnx" DestinationFolder="$(OutputPath)" />
+  </Target>
 
 </Project>
