@@ -12,13 +12,13 @@ namespace OE.Tudasbazis.Application.Services
 		/// <exception cref="BusinessLogicException">Thrown when an error occurs during indexing.</exception>
 		Task IndexEmbeddingAsync(ElasticDocument document);
 
-		/// <summary>
+        /// <summary>
 		///		Searches for the top K similar documents to the given query embedding.
-		/// </summary>
-		/// <param name="queryEmbedding">The query embedding to search for similar documents.</param>
-		/// <param name="topK">The number of similar documents to retrieve (default is 5).</param>
+        /// </summary>
+        /// <param name="queryEmbedding">The query embedding to search for similar documents.</param>
+        /// <param name="topK">The number of similar documents to retrieve (default is 5).</param>
 		/// <exception cref="BusinessLogicException">Thrown when an error occurs during searching.</exception>
-		/// <returns>A list of ElasticDocuments representing the search results.</returns>
-		Task<List<ElasticDocument>> SearchAsync(float[] queryEmbedding, int topK = 5);
+        /// <returns>A list of ElasticDocuments representing the search results.</returns>
+        Task<List<ElasticDocument>> SearchAsync(float[] queryEmbedding, int topK = 5);
 	}
 }
