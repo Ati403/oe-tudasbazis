@@ -13,7 +13,7 @@ namespace OE.Tudasbazis.Application.Services
 		Task IndexEmbeddingAsync(ElasticDocument document);
 
         /// <summary>
-        /// Searches for the top K similar documents to the given query embedding.
+        ///		Searches for the top K similar documents to the given query embedding.
         /// </summary>
         /// <param name="queryEmbedding">The query embedding to search for similar documents.</param>
         /// <param name="topK">The number of similar documents to retrieve (default is 5).</param>
