@@ -27,8 +27,4 @@
 	<None Include="Services\EmbeddingService\Models\sentence_transformer.onnx" />
   </ItemGroup>
 
-  <!--<Target Name="CopyONNXModel" AfterTargets="Build">
-	<Copy SourceFiles="Services\EmbeddingService\Models\sentence_transformer.onnx" DestinationFolder="$(OutputPath)" />
-  </Target>-->
-
 </Project>
