@@ -10,8 +10,10 @@
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.9" />
+    <PackageReference Include="FastBertTokenizer" Version="1.0.28" />
     <PackageReference Include="Microsoft.ML" Version="3.0.1" />
     <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.19.2" />
+    <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="3.0.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
   </ItemGroup>
 
@@ -25,8 +27,8 @@
 	<None Include="Services\EmbeddingService\Models\sentence_transformer.onnx" />
   </ItemGroup>
 
-  <Target Name="CopyONNXModel" AfterTargets="Build">
+  <!--<Target Name="CopyONNXModel" AfterTargets="Build">
 	<Copy SourceFiles="Services\EmbeddingService\Models\sentence_transformer.onnx" DestinationFolder="$(OutputPath)" />
-  </Target>
+  </Target>-->
 
 </Project>
