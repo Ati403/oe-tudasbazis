@@ -31,5 +31,9 @@
   <Target Name="CopyONNXModel" AfterTargets="Build">
 	<Copy SourceFiles="..\..\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\sentence_transformer.onnx" DestinationFolder="$(OutputPath)" />
   </Target>
+
+  <Target Name="CopyMlVocab" AfterTargets="Build">
+	<Copy SourceFiles="..\..\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\vocab.txt" DestinationFolder="$(OutputPath)" />
+  </Target>
 	
 </Project>
