@@ -1,74 +1,72 @@
-using FastBertTokenizer;
-
+using Microsoft.Extensions.Options;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 
-using OE.Tudasbazis.Application.DTOs.Service;
-using OE.Tudasbazis.Application.Services;
+using OE.Tudasbazis.Application.Services.EmbeddingService;
+using OE.Tudasbazis.Application.Settings;
 
 namespace OE.Tudasbazis.Logic.Services.EmbeddingService
 {
 	public class EmbeddingService : IEmbeddingService
 	{
 		private readonly InferenceSession _session;
+		private readonly ITokenizerService _tokenizerService;
+		private readonly EmbeddingModelSettings _embeddingModelSettings;
 
-		public EmbeddingService(string modelPath)
+		public EmbeddingService(IOptions<EmbeddingModelSettings> embeddingModelSettings, ITokenizerServiceFactory tokenizerServiceFactory)
 		{
-			_session = new InferenceSession("D:\\Dev\\Git\\oe-tudasbazis\\src\\OE.Tudasbazis\\OE.Tudasbazis.Web\\OE.Tudasbazis.Web\\bin\\Debug\\net8.0\\sentence_transformer.onnx");
+			string modelOnnxFile = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.onnx").First();
+			_session = new InferenceSession(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, modelOnnxFile));
+
+			_embeddingModelSettings = embeddingModelSettings.Value;
+
+			_tokenizerService = tokenizerServiceFactory.GetService(_embeddingModelSettings.UseOnlineVocabulary);
 		}
 
 		public float[] GetEmbeddings(string text)
 		{
-			var mlInput = GenerateTokens(text).Result;
+			var tokenizedData = _tokenizerService.GetTokenizedData(text);
 
-			var inputTensor1 = new DenseTensor<long>(mlInput.InputIds, [1, mlInput.InputIds.Length]);
-			var inputTensor2 = new DenseTensor<long>(mlInput.AttentionMask, [1, mlInput.AttentionMask.Length]);
+			var inputIdsTensor = new DenseTensor<long>(tokenizedData.InputIds, [1, tokenizedData.InputIds.Length]);
+			var attentionMaskTensor = new DenseTensor<long>(tokenizedData.AttentionMask, [1, tokenizedData.AttentionMask.Length]);
 			var input = new NamedOnnxValue[]
 			{
-				NamedOnnxValue.CreateFromTensor("input_ids", inputTensor1),
-				NamedOnnxValue.CreateFromTensor("attention_mask", inputTensor2),
+				NamedOnnxValue.CreateFromTensor("input_ids", inputIdsTensor),
+				NamedOnnxValue.CreateFromTensor("attention_mask", attentionMaskTensor),
 			};
 
-			using (var results = _session.Run(input))
-			{
-				var outputTensor = results.First().AsTensor<float>();
+			using var results = _session.Run(input);
+			var outputTensor = results[0].AsTensor<float>();
 
-				int batchSize = outputTensor.Dimensions[0];
-				int maxSeqLen = outputTensor.Dimensions[1];
-				int embeddingSize = outputTensor.Dimensions[2];
+			float[] embedding = GetAveragePooling(outputTensor);
 
-				var pooledEmbedding = new float[embeddingSize];
-				for (int i = 0; i < maxSeqLen; i++)  // Iterate over tokens
-				{
-					for (int j = 0; j < embeddingSize; j++)  // Iterate over embedding dimensions
-					{
-						pooledEmbedding[j] += outputTensor[0, i, j];
-					}
-				}
-
-				// Átlagolás
-				for (int j = 0; j < embeddingSize; j++)
-				{
-					pooledEmbedding[j] /= maxSeqLen;  // Average the embeddings
-				}
-
-				return pooledEmbedding;
-			}
+			return embedding;
 		}
 
-		private async Task<MLInputData> GenerateTokens(string text)
+		private static float[] GetAveragePooling(Tensor<float> outputTensor)
 		{
-			var tokenizer = new BertTokenizer();
-			await tokenizer.LoadFromHuggingFaceAsync("danieleff/hubert-base-cc-sentence-transformer");
-			var (inputIds, attentionMask, tokenTypeIds) = tokenizer.Encode(text);
+			int maxSeqLen = outputTensor.Dimensions[1];
+			int embeddingSize = outputTensor.Dimensions[2];
 
-			var inputIdsArray = inputIds.ToArray();
+			float[] pooledEmbedding = new float[embeddingSize];
 
-			return new MLInputData
+			// Iterate over tokens
+			for (int i = 0; i < maxSeqLen; i++)
 			{
-				InputIds = inputIds.ToArray(),
-				AttentionMask = attentionMask.ToArray()
-			};
+				// Iterate over embedding dimensions
+				for (int j = 0; j < embeddingSize; j++)
+				{
+					pooledEmbedding[j] += outputTensor[0, i, j];
+				}
+			}
+
+			// Average the embeddings
+			for (int j = 0; j < embeddingSize; j++)
+			{
+				pooledEmbedding[j] /= maxSeqLen;
+			}
+
+			return pooledEmbedding;
 		}
 	}
 }
