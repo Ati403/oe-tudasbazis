@@ -1,4 +1,4 @@
-namespace OE.Tudasbazis.Application.Services
+namespace OE.Tudasbazis.Application.Services.EmbeddingService
 {
 	public interface IEmbeddingService
 	{
