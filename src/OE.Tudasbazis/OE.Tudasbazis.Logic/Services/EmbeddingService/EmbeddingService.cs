@@ -1,74 +1,59 @@
-using Microsoft.ML;
+using FastBertTokenizer;
+
 using Microsoft.ML.OnnxRuntime;
-using Microsoft.ML.Data;
-using Microsoft.ML.Transforms.Onnx;
+using Microsoft.ML.OnnxRuntime.Tensors;
 
 using OE.Tudasbazis.Application.DTOs.Service;
 using OE.Tudasbazis.Application.Services;
-
-using FastBertTokenizer;
 
 namespace OE.Tudasbazis.Logic.Services.EmbeddingService
 {
 	public class EmbeddingService : IEmbeddingService
 	{
-		private readonly MLContext _mlContext;
-		private readonly ITransformer _onnxModel;
-		private readonly PredictionEngine<MLInputData, MLOutputData> _predictionEngine;
-		//private readonly PredictionEngine<BertInput, MLOutputData> _predictionEngine;
+		private readonly InferenceSession _session;
 
 		public EmbeddingService(string modelPath)
 		{
-			//_mlContext = new MLContext();
-
-			//var pipeline = _mlContext.Transforms.ApplyOnnxModel(
-			//	modelFile: modelPath,
-			//	inputColumnNames: ["input_ids", "attention_mask"],
-			//	outputColumnNames: ["last_hidden_state"]);
-
-			//var emptyData = _mlContext.Data.LoadFromEnumerable(new List<MLInputData>());
-			//_onnxModel = pipeline.Fit(emptyData);
-			//_predictionEngine = _mlContext.Model.CreatePredictionEngine<MLInputData, MLOutputData>(_onnxModel);
+			_session = new InferenceSession("D:\\Dev\\Git\\oe-tudasbazis\\src\\OE.Tudasbazis\\OE.Tudasbazis.Web\\OE.Tudasbazis.Web\\bin\\Debug\\net8.0\\sentence_transformer.onnx");
 		}
 
 		public float[] GetEmbeddings(string text)
 		{
 			var mlInput = GenerateTokens(text).Result;
 
-			//var result = _predictionEngine.Predict(mlInput);
-			using var runOptions = new RunOptions();
-			using var session = new InferenceSession("D:\\Dev\\Git\\oe-tudasbazis\\src\\OE.Tudasbazis\\OE.Tudasbazis.Web\\OE.Tudasbazis.Web\\bin\\Debug\\net8.0\\sentence_transformer.onnx");
-
-			using var inputIdsOrtValue = OrtValue.CreateTensorValueFromMemory(mlInput.InputIds, [1, mlInput.InputIds.Length]);
-			using var attMaskOrtValue = OrtValue.CreateTensorValueFromMemory(mlInput.AttentionMask, [1, mlInput.AttentionMask.Length]);
-
-			var inputs = new Dictionary<string, OrtValue>
+			var inputTensor1 = new DenseTensor<long>(mlInput.InputIds, [1, mlInput.InputIds.Length]);
+			var inputTensor2 = new DenseTensor<long>(mlInput.AttentionMask, [1, mlInput.AttentionMask.Length]);
+			var input = new NamedOnnxValue[]
 			{
-				{ "input_ids", inputIdsOrtValue },
-				{ "attention_mask", attMaskOrtValue }
+				NamedOnnxValue.CreateFromTensor("input_ids", inputTensor1),
+				NamedOnnxValue.CreateFromTensor("attention_mask", inputTensor2),
 			};
 
-			var output = session.Run(runOptions, inputs, session.OutputNames);
-			var fullOutput = output.ToArray();
-			float[] embeddings = output[output.Count - 1].GetTensorDataAsSpan<float>().ToArray();
-
-			return Array.Empty<float>();
-		}
-
-		private int GetMaxValueIndex(ReadOnlySpan<float> span)
-		{
-			float maxVal = span[0];
-			int maxIndex = 0;
-			for (int i = 1; i < span.Length; ++i)
+			using (var results = _session.Run(input))
 			{
-				float v = span[i];
-				if (v > maxVal)
+				var outputTensor = results.First().AsTensor<float>();
+
+				int batchSize = outputTensor.Dimensions[0];
+				int maxSeqLen = outputTensor.Dimensions[1];
+				int embeddingSize = outputTensor.Dimensions[2];
+
+				var pooledEmbedding = new float[embeddingSize];
+				for (int i = 0; i < maxSeqLen; i++)  // Iterate over tokens
 				{
-					maxVal = v;
-					maxIndex = i;
+					for (int j = 0; j < embeddingSize; j++)  // Iterate over embedding dimensions
+					{
+						pooledEmbedding[j] += outputTensor[0, i, j];
+					}
 				}
+
+				// Átlagolás
+				for (int j = 0; j < embeddingSize; j++)
+				{
+					pooledEmbedding[j] /= maxSeqLen;  // Average the embeddings
+				}
+
+				return pooledEmbedding;
 			}
-			return maxIndex;
 		}
 
 		private async Task<MLInputData> GenerateTokens(string text)
