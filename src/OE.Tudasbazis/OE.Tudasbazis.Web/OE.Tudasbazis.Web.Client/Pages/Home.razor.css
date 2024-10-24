@@ -6,6 +6,7 @@
 	align-items: center;
 	height: 100vh;
 	padding: 2rem;
+	color: white;
 }
 
 /* Styles for the text output (top) */
@@ -16,6 +17,7 @@
 	align-items: flex-start;
 	text-align: center;
 	width: 100%;
+	color:white;
 }
 
 /* Styles for the text input (bottom) */
@@ -27,11 +29,32 @@
 	width: 100%;
 }
 
+.text-input-box {
+	background-color: #222;
+	border: 2px solid green;
+	color: white;
+}
+
 	/* Style for the input field */
 	.text-input input {
 		width: 300px;
 		padding: 0.5rem;
 		font-size: 1rem;
 		border-radius: 5px;
-		border: 1px solid #ccc;
+		border: 1px solid black;
+
+	}
+
+.image-overlay {
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	transform: translate(-50%, -50%); /* Adjust position to truly center it */
+	z-index: 10; /* Ensures it is overlaid above other content */
+}
+
+	.image-overlay img {
+		width: 1000px;
+		height: auto;
+		opacity: 0.7;
 	}
