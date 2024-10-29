@@ -1,15 +1,24 @@
-from transformers import AutoModel, AutoTokenizer
 import torch
+from transformers import AutoModel
 
 model_name = "danieleff/hubert-base-cc-sentence-transformer"
-output_path = ".\sentence_transformer.onnx"
 model = AutoModel.from_pretrained(model_name)
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+model.eval()
 
-dummy_input = tokenizer("Ez egy teszt mondat.", return_tensors="pt", padding=True, truncation=True)
+inputs = {
+        # list of numerical ids for the tokenized text
+        'input_ids':   torch.randint(32, [1, 512], dtype=torch.long), 
+        # dummy list of ones
+        'attention_mask': torch.ones([1, 512], dtype=torch.long),  
+    }
+
+symbolic_names = {0: 'batch_size', 1: 'max_seq_len'}
+
 torch.onnx.export(model,
-                  (dummy_input["input_ids"], dummy_input["attention_mask"]),
-                  output_path,
-                  input_names=["input_ids", "attention_mask"],
-                  output_names=["last_hidden_state"],
-                  opset_version=14)
+                  (inputs['input_ids'], inputs['attention_mask']),
+                  "sentence_transformer.onnx",
+                  opset_version=14,
+                  do_constant_folding=True,
+                  input_names=['input_ids', 'attention_mask'],
+                  output_names=['last_hidden_state'],
+                  dynamic_axes={'input_ids': symbolic_names, 'attention_mask': symbolic_names, 'last_hidden_state': symbolic_names})
