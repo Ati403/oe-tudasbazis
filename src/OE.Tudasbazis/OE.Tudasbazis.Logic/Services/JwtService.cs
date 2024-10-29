@@ -11,7 +11,7 @@ using OE.Tudasbazis.Application.Settings;
 
 namespace OE.Tudasbazis.Logic.Services
 {
-	public class JwtService: IJwtService
+	public class JwtService : IJwtService
 	{
 		private readonly JwtSettings _jwtSettings;
 
