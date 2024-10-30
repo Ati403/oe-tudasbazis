@@ -9,9 +9,9 @@ namespace OE.Tudasbazis.Logic.Services
 	public class AuthService : IAuthService
 	{
 		private readonly IUserService _userService;
-		private readonly ITokenService _tokenService;
+		private readonly IJwtService _tokenService;
 
-		public AuthService(IUserService userService, ITokenService tokenService)
+		public AuthService(IUserService userService, IJwtService tokenService)
 		{
 			_userService = userService;
 			_tokenService = tokenService;

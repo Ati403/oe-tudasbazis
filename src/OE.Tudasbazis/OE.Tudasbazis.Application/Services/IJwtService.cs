@@ -2,13 +2,13 @@ using OE.Tudasbazis.Application.DTOs.Responses;
 
 namespace OE.Tudasbazis.Application.Services
 {
-	public interface ITokenService
+	public interface IJwtService
 	{
 		/// <summary>
-		///		Generates a token for the given user.
+		///		Generates a JSON Web Token for the given user.
 		/// </summary>
 		/// <param name="userData">User data for login.</param>
-		/// <returns>JWT token</returns>
+		/// <returns>JSON Web Token</returns>
 		public string GenerateToken(LoggedInUserDto userData);
 	}
 }

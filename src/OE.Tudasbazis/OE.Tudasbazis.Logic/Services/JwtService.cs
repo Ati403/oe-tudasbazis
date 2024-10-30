@@ -11,11 +11,11 @@ using OE.Tudasbazis.Application.Settings;
 
 namespace OE.Tudasbazis.Logic.Services
 {
-	public class TokenService : ITokenService
+	public class JwtService : IJwtService
 	{
 		private readonly JwtSettings _jwtSettings;
 
-		public TokenService(IOptions<JwtSettings> jwtSettings)
+		public JwtService(IOptions<JwtSettings> jwtSettings)
 		{
 			_jwtSettings = jwtSettings.Value;
 		}
