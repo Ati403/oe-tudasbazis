@@ -1,3 +1,4 @@
+using OE.Tudasbazis.Application.DTOs.Responses;
 using OE.Tudasbazis.Application.Exceptions;
 
 namespace OE.Tudasbazis.Web.Middlewares
@@ -20,13 +21,21 @@ namespace OE.Tudasbazis.Web.Middlewares
 			catch (BusinessLogicException ex)
 			{
 				context.Response.StatusCode = ex.StatusCode;
-				await context.Response.WriteAsJsonAsync(new { message = ex.Message });
+				await context.Response.WriteAsJsonAsync(
+					new ErrorResponseDto
+					{
+						Errors = [ex.Message]
+					});
 			}
 #if !DEBUG
 			catch (Exception)
 			{
 				context.Response.StatusCode = 500;
-				await context.Response.WriteAsJsonAsync(new { message = "An unexpected error occured." });
+				await context.Response.WriteAsJsonAsync(
+					new ErrorResponseDto
+					{
+						Errors = ["An unexpected error occured."]
+					});
 			}
 #endif
 		}
