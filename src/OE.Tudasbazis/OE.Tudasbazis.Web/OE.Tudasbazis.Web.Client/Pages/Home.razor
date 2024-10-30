@@ -1,6 +1,8 @@
 @page "/"
+@using System.Diagnostics
+@using BlazorBootstrap;
 
-<div className="page-container">
+@* <div className="page-container">
 	<div class="image-overlay">
 		<img src="OE_logo.png" alt="Logo" />
 	</div>
@@ -13,4 +15,49 @@
 			<input class="text-input-box" type="text" placeholder="Uzenet OE.Tudasbazis-nak" />
 		</div>
 	</div>
+</div> *@
+
+<PageTitle>Főoldal</PageTitle>
+
+<div class="home-container">
+	<h1>Tedd fel a kérdésed az egyetemmel kapcsolatban</h1>
+
+    @if (!string.IsNullOrEmpty(ApiResponse))
+    {
+        <div class="response-box">
+            <p>@ApiResponse asd</p>
+        </div>
+    }
+
+    <div class="input-container">
+        <div class="user-input-container">
+            @* <InputText class="user-input" @bind-Value="UserInput" placeholder="Üzenet az ÓE tudásbázisnak" /> *@
+            <input class="user-input" type="text" placeholder="Üzenet az ÓE tudásbázisnak" />
+        </div>
+
+        <div class="d-flex">
+            <button class="search-button" @onclick="GetAnswerAsync">
+                <Icon Name="IconName.Search" />
+            </button>
+        </div>
+    </div>
 </div>
+
+@code {
+    private string UserInput { get; set; }
+    private string ApiResponse { get; set; }
+
+    // private async Task GetAnswerAsync() {
+    //     Console.WriteLine("Asd");
+
+    //     ApiResponse = "Válasz";
+    //     StateHasChanged();
+    // }
+    private void GetAnswerAsync()
+    {
+        Console.WriteLine("Gomb megnyomva");
+        Debug.WriteLine("gomb lenyomva");
+        ApiResponse = "Válasz";
+        StateHasChanged();
+    }
+}

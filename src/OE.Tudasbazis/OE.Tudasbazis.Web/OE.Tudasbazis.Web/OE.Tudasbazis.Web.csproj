@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="wwwroot\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\OE.Tudasbazis.Application\OE.Tudasbazis.Application.csproj" />
     <ProjectReference Include="..\..\OE.Tudasbazis.DataAccess\OE.Tudasbazis.DataAccess.csproj" />
     <ProjectReference Include="..\..\OE.Tudasbazis.Logic\OE.Tudasbazis.Logic.csproj" />

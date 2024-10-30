@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 internal class Program
 {
-	private static async global::System.Threading.Tasks.Task Main(string[] args)
+	private static async Task Main(string[] args)
 	{
 		var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+		builder.Services.AddBlazorBootstrap();
 
 		builder.Services.AddScoped(http => new HttpClient
 		{

@@ -1,4 +1,4 @@
-﻿@page "/Error"
+@page "/Error"
 @using System.Diagnostics
 
 <PageTitle>Error</PageTitle>
@@ -6,12 +6,12 @@
 <h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
 
-@if (ShowRequestId)
+@* @if (ShowRequestId)
 {
     <p>
         <strong>Request ID:</strong> <code>@RequestId</code>
     </p>
-}
+} *@
 
 <h3>Development Mode</h3>
 <p>
@@ -24,7 +24,7 @@
     and restarting the app.
 </p>
 
-@code{
+@* @code{
     [CascadingParameter]
     private HttpContext? HttpContext { get; set; }
 
@@ -33,4 +33,4 @@
 
     protected override void OnInitialized() =>
         RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
-}
+} *@

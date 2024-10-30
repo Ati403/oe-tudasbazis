@@ -43,9 +43,9 @@ internal class Program
 
 		app.UseStaticFiles();
 
-		app.MapRazorComponents<OE.Tudasbazis.Web.Components.App>()
-			.AddInteractiveWebAssemblyRenderMode()
-			.AddAdditionalAssemblies(typeof(OE.Tudasbazis.Web.Client._Imports).Assembly);
+		app.MapRazorComponents<OE.Tudasbazis.Web.Client.Components.App>()
+			.AddInteractiveWebAssemblyRenderMode();
+			//.AddAdditionalAssemblies(typeof(OE.Tudasbazis.Web.Client._Imports).Assembly);
 
 		app.UseRouting();
 
