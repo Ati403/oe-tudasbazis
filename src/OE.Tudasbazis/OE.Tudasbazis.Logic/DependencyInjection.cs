@@ -22,6 +22,7 @@ namespace OE.Tudasbazis.Logic
 			services.AddScoped<IElasticService, ElasticService>();
 
 			services.AddTransient<ITokenizerServiceFactory, TokenizerServiceFactory>();
+			services.AddTransient<IOpenAiService, OpenAiService>();
 
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			return services;
