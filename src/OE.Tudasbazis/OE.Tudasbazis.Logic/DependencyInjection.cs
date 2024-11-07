@@ -20,6 +20,7 @@ namespace OE.Tudasbazis.Logic
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IAuthService, AuthService>();
 			services.AddScoped<IElasticService, ElasticService>();
+			services.AddScoped<ISearchService, SearchService>();
 
 			services.AddTransient<ITokenizerServiceFactory, TokenizerServiceFactory>();
 			services.AddTransient<IOpenAiService, OpenAiService>();
