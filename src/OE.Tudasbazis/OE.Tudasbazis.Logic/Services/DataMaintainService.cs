@@ -23,7 +23,6 @@ namespace OE.Tudasbazis.Logic.Services
 		{
 			float[] vectorEmbedding = _embeddingService.GetEmbeddings(text);
 
-
 			//TODO: Create generic method for this
 			var elasticDocument = new ElasticDocument
 			{

@@ -24,26 +24,26 @@ namespace OE.Tudasbazis.Web.Controllers
 		/// </summary>
 		/// <param name="dataMaintainDto">Contains the text to be uploaded to the vector database.</param>
 		[HttpPost]
-        [Route("upload/text")]
-        public async Task<IActionResult> UploadStringAsync([FromBody] DataMaintainDto dataMaintainDto)
-        {
+		[Route("upload/text")]
+		public async Task<IActionResult> UploadStringAsync([FromBody] DataMaintainDto dataMaintainDto)
+		{
 			await _dataMaintainService.UploadStringToVectorDatabaseAsync(dataMaintainDto.Text);
 
-            return Created();
-        }
+			return Created();
+		}
 
-        /// <summary>
-        ///		Uploads a PDF file to the vector database.
-        /// </summary>
-        /// <param name="file">The PDF file to be uploaded to the vector database.</param>
-        [HttpPost]
-        [Route("upload/pdf")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> UploadPdfAsync(IFormFile file)
-        {
+		/// <summary>
+		///		Uploads a PDF file to the vector database.
+		/// </summary>
+		/// <param name="file">The PDF file to be uploaded to the vector database.</param>
+		[HttpPost]
+		[Route("upload/pdf")]
+		[Consumes("multipart/form-data")]
+		public async Task<IActionResult> UploadPdfAsync(IFormFile file)
+		{
 			await _dataMaintainService.UploadPdfToVectoDatabaseAsync(file.FileName, file.OpenReadStream());
 
-            return Created();
-        }
+			return Created();
+		}
 	}
 }
