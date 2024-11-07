@@ -109,6 +109,11 @@ namespace OE.Tudasbazis.Web
 				.ValidateDataAnnotations()
 				.ValidateOnStart();
 
+			services.AddOptions<OpenAiSettings>()
+				.Bind(configuration.GetSection(OpenAiSettings.Section))
+				.ValidateDataAnnotations()
+				.ValidateOnStart();
+
 			return services;
 		}
 	}
