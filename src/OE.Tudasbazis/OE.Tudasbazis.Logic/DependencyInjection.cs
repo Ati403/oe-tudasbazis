@@ -24,6 +24,7 @@ namespace OE.Tudasbazis.Logic
 
 			services.AddTransient<ITokenizerServiceFactory, TokenizerServiceFactory>();
 			services.AddTransient<IPdfProcessorService, PdfProcessorService>();
+			services.AddTransient<IOpenAiService, OpenAiService>();
 
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			return services;

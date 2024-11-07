@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Azure.AI.OpenAI" Version="2.0.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.9" />
     <PackageReference Include="FastBertTokenizer" Version="1.0.28" />
