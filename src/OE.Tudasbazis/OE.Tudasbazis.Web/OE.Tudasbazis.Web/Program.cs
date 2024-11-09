@@ -49,6 +49,7 @@ internal class Program
 
 		app.UseRouting();
 
+		app.UseMiddleware<RateLimitingMiddleware>();
 		app.UseMiddleware<BusinessExceptionHandlingMiddleware>();
 
 		app.UseAuthentication();

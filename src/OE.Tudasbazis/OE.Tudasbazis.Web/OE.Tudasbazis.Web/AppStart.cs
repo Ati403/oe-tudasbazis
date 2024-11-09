@@ -52,6 +52,8 @@ namespace OE.Tudasbazis.Web
 			});
 			services.AddAuthorization();
 
+			services.AddMemoryCache();
+
 			return services;
 		}
 
