@@ -36,4 +36,8 @@
 	<Copy SourceFiles="..\..\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\vocab.txt" DestinationFolder="$(OutputPath)" />
   </Target>
 	
+  <ItemGroup>
+    <Folder Include="wwwroot\bootstrap\" />
+  </ItemGroup>
+
 </Project>
