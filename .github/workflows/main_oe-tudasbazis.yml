@@ -34,9 +34,22 @@ jobs:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/publish
 
-  deploy:
+  cleanup:
     runs-on: windows-latest
     needs: build
+    steps:
+      - name: Set up Azure CLI
+        uses: azure/CLI@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+       
+      - name: Clean up existing files in Azure Web App
+        run: |
+          az webapp deployment source config-zip --resource-group oe-tudasbazis --name oe-tudasbazis --src . --slot Production
+
+  deploy:
+    runs-on: windows-latest
+    needs: [build, cleanup]
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
