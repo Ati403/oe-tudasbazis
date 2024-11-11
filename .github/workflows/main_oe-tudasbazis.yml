@@ -35,7 +35,7 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/publish
 
   cleanup:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Set up Azure CLI
