@@ -52,6 +52,8 @@ namespace OE.Tudasbazis.Web
 			});
 			services.AddAuthorization();
 
+			services.AddMemoryCache();
+
 			return services;
 		}
 
@@ -109,6 +111,11 @@ namespace OE.Tudasbazis.Web
 
 			services.AddOptions<EmbeddingModelSettings>()
 				.Bind(configuration.GetSection(EmbeddingModelSettings.Section))
+				.ValidateDataAnnotations()
+				.ValidateOnStart();
+
+			services.AddOptions<OpenAiSettings>()
+				.Bind(configuration.GetSection(OpenAiSettings.Section))
 				.ValidateDataAnnotations()
 				.ValidateOnStart();
 
