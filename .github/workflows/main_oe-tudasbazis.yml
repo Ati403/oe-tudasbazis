@@ -44,8 +44,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
        
       - name: Clean up existing files in Azure Web App
-        run: |
-          az webapp deployment source config-zip --resource-group oe-tudasbazis --name oe-tudasbazis --src . --slot Production
+        run: az webapp deploy delete --name oe-tudasbazis --resource-group abelm-oe-tudasbazis --slot Production
 
   deploy:
     runs-on: windows-latest
