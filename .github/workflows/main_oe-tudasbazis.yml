@@ -59,6 +59,9 @@ jobs:
          ElasticSearch.Url: ${{ secrets.ELASTICSEARCH_URL }}
          ElasticSearch.IndexName: ${{ secrets.ELASTICSEARCH_INDEXNAME }}
          ElasticSearch.ApiKey: ${{ secrets.ELASTICSEARCH_APIKEY }}
+         OpenAi.DeploymentId: ${{ secrets.OPENAI_DEPLOYMENTID }}
+         OpenAi.ApiKey: ${{ secrets.OPENAI_APIKEY }}
+         OpenAi.Endpoint: ${{ secrets.OPENAI_ENDPOINT }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
