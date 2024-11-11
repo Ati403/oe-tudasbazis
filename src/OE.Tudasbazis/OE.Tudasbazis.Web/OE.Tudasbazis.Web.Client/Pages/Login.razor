@@ -1,4 +1,5 @@
-@page "/login"
+@page "/Login"
+
 @inject HttpClient Http
 @inject AuthenticationStateProvider AuthStateProvider
 @inject ILocalStorageService LocalStorage
@@ -7,31 +8,54 @@
 <h3>Login</h3>
 
 <EditForm Model="user" OnValidSubmit="HandleLogin">
-	<DataAnnotationsValidator />
-	<ValidationSummary />
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-	<div class="mb-3">
-		<label for="username">Name</label>
-		<InputText id="username" @bind-Value="user.Username" class="form-control" />
-	</div>
+    <div class="mb-3">
+        <label for="username">Name</label>
+        <InputText id="username" @bind-Value="user.Username" class="form-control" />
+    </div>
 
-	<div class="mb-3">
-		<label for="password">Password</label>
-		<InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
-	</div>
+    <div class="mb-3">
+        <label for="password">Password</label>
+        <InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
+    </div>
 
-	<button type="submit" class="btn btn-primary">Do it!</button>
+    <button type="submit" class="btn btn-primary">Do it!</button>
 </EditForm>
 
 @code {
-	private UserLoginDto user = new UserLoginDto();
+    private UserLoginDto user = new UserLoginDto();
+    private string loginError; // For displaying error messages if login fails
 
-	private async Task HandleLogin()
-	{
-		var result = await Http.PostAsJsonAsync($"{Configuration["ApiUrl"]}api/auth", user);
-		var token = await result.Content.ReadAsStringAsync();
+    private async Task HandleLogin()
+    {
+        try
+        {
+            var result = await Http.PostAsJsonAsync($"{Configuration["ApiUrl"]}api/auth", user);
 
-		await LocalStorage.SetItemAsync("token", token);
-		await AuthStateProvider.GetAuthenticationStateAsync();
-	}
+            if (result.IsSuccessStatusCode)
+            {
+                var token = await result.Content.ReadAsStringAsync();
+
+                // Store the token in local storage
+                await LocalStorage.SetItemAsync("token", token);
+
+                // Update the authentication state
+                await AuthStateProvider.GetAuthenticationStateAsync();
+
+                // Optionally redirect the user to the home page or dashboard
+                //NavigationManager.NavigateTo("/home");
+            }
+            else
+            {
+                loginError = "Invalid username or password. Please try again.";
+            }
+        }
+        catch (Exception ex)
+        {
+            loginError = "An error occurred while trying to log in. Please try again later.";
+            Console.Error.WriteLine(ex.Message);
+        }
+    }
 }
