@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -16,6 +17,8 @@ namespace OE.Tudasbazis.Web
 	{
 		public static IServiceCollection BindServices(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.Configure<FormOptions>(options => options.MultipartBodyLengthLimit = 104857600);
+
 			//Bind Data Access Layer
 			var connectionStrings = configuration
 				.GetSection(ConnectionStrings.Section)

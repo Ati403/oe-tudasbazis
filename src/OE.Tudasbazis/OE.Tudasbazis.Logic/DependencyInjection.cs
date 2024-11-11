@@ -20,8 +20,10 @@ namespace OE.Tudasbazis.Logic
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IAuthService, AuthService>();
 			services.AddScoped<IElasticService, ElasticService>();
+			services.AddScoped<IDataMaintainService, DataMaintainService>();
 
 			services.AddTransient<ITokenizerServiceFactory, TokenizerServiceFactory>();
+			services.AddTransient<IPdfProcessorService, PdfProcessorService>();
 
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			return services;
