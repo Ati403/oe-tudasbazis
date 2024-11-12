@@ -37,11 +37,11 @@
   </Target>
 
   <Target Name="CopyONNXModel" AfterTargets="Publish">
-	<Copy SourceFiles="....\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\sentence_transformer.onnx" DestinationFolder="$(PublishDir)" />
+	<Copy SourceFiles="..\..\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\sentence_transformer.onnx" DestinationFolder="$(PublishDir)" />
   </Target>
 
 	<Target Name="CopyMlVocab" AfterTargets="Publish">
-		<Copy SourceFiles="....\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\vocab.txt" DestinationFolder="$(PublishDir)" />
+		<Copy SourceFiles="..\..\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\vocab.txt" DestinationFolder="$(PublishDir)" />
 	</Target>
 	
   <ItemGroup>
