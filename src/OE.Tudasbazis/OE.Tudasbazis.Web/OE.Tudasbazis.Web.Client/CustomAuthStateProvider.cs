@@ -14,7 +14,7 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
 	public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 	{
-		var token = await _localStorage.GetItemAsync<string>("token");
+		string? token = await _localStorage.GetItemAsync<string>("TOKEN");
 
 		if (string.IsNullOrEmpty(token))
 		{
@@ -45,6 +45,8 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 	{
 		var identity = new ClaimsIdentity();
 		var user = new ClaimsPrincipal(identity);
+
+		//TODO: Remove token from local storage
 
 		NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
 	}

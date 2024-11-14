@@ -1,60 +1,71 @@
 @page "/Login"
 
-@inject HttpClient Http
-@inject AuthenticationStateProvider AuthStateProvider
+@rendermode InteractiveWebAssembly
+
 @inject ILocalStorageService LocalStorage
 @inject IConfiguration Configuration
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+@inject IToastService Toaster
 
 <h3>Login</h3>
 
-<EditForm Model="user" OnValidSubmit="HandleLogin">
+@*
+    TODO: Try to fix
+*@
+@* <EditForm Model="User" OnValidSubmit="HandleLoginAsync">
     <DataAnnotationsValidator />
-    <ValidationSummary />
+    <ValidationSummary /> *@
 
     <div class="mb-3">
         <label for="username">Name</label>
-        <InputText id="username" @bind-Value="user.Username" class="form-control" />
+        <InputText id="username" @bind-Value="User.Username" class="form-control" />
     </div>
 
     <div class="mb-3">
         <label for="password">Password</label>
-        <InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
+        <InputText id="password" @bind-Value="User.Password" type="password" class="form-control" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Do it!</button>
-</EditForm>
+    @* <button type="submit" class="btn btn-primary">Do it!</button> *@
+    <button type="button" @onclick="HandleLoginAsync" class="btn btn-primary">Do it!</button>
+@* </EditForm> *@
 
 @code {
-    private UserLoginDto user = new UserLoginDto();
-    private string loginError; // For displaying error messages if login fails
+    private LoginOrRegisterRequestDto User { get; set; } = new();
+    private string LoginError { get; set; } = string.Empty;
 
-    private async Task HandleLogin()
+    private async Task HandleLoginAsync()
     {
+        Toaster.ShowSuccess("test");
+
         try
         {
-            var result = await Http.PostAsJsonAsync($"{Configuration["ApiUrl"]}api/auth", user);
+            var result = await Http.PostAsJsonAsync<LoginOrRegisterRequestDto>("api/Auth/Login", User);
 
             if (result.IsSuccessStatusCode)
             {
-                var token = await result.Content.ReadAsStringAsync();
+                var jwtDto = await result.Content.ReadFromJsonAsync<JwtDto>();
 
-                // Store the token in local storage
-                await LocalStorage.SetItemAsync("token", token);
+                if (jwtDto is not null)
+                {
+                    await LocalStorage.SetItemAsync("TOKEN", jwtDto.Token);
+                    var state = await AuthStateProvider.GetAuthenticationStateAsync();
 
-                // Update the authentication state
-                await AuthStateProvider.GetAuthenticationStateAsync();
+                    Toaster.ShowInfo("Logged in succesfully.");
 
-                // Optionally redirect the user to the home page or dashboard
-                //NavigationManager.NavigateTo("/home");
+                    // NavManager.NavigateTo("");
+                }
             }
             else
             {
-                loginError = "Invalid username or password. Please try again.";
+                LoginError = "Invalid username or password. Please try again.";
             }
         }
         catch (Exception ex)
         {
-            loginError = "An error occurred while trying to log in. Please try again later.";
+            LoginError = "An error occurred while trying to log in. Please try again later.";
             Console.Error.WriteLine(ex.Message);
         }
     }

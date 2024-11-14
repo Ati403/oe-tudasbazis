@@ -1,3 +1,8 @@
+using Blazored.LocalStorage;
+using Blazored.Toast;
+
+using Microsoft.AspNetCore.Components.Authorization;
+
 using OE.Tudasbazis.Web;
 using OE.Tudasbazis.Web.Middlewares;
 
@@ -17,6 +22,13 @@ internal class Program
 		//{
 		//	BaseAddress = new Uri("Https://localhost:7165"),
 		//});
+
+		builder.Services.AddBlazoredToast();
+		builder.Services.AddBlazoredLocalStorage();
+
+		builder.Services.AddAuthorizationCore();
+
+		builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
 		builder.Services.AddHttpClient();
 
