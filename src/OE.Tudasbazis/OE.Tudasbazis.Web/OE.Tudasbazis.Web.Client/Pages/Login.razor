@@ -9,6 +9,8 @@
 @inject NavigationManager NavManager
 @inject IToastService Toaster
 
+<Blazored.Toast.BlazoredToasts />
+
 <h3>Login</h3>
 
 @*
@@ -38,7 +40,7 @@
 
     private async Task HandleLoginAsync()
     {
-        Toaster.ShowSuccess("test");
+        // Toaster.ShowSuccess("test");
 
         try
         {
@@ -53,7 +55,7 @@
                     await LocalStorage.SetItemAsync("TOKEN", jwtDto.Token);
                     var state = await AuthStateProvider.GetAuthenticationStateAsync();
 
-                    Toaster.ShowInfo("Logged in succesfully.");
+                    Toaster.ShowSucces("Logged in succesfully.");
 
                     // NavManager.NavigateTo("");
                 }
