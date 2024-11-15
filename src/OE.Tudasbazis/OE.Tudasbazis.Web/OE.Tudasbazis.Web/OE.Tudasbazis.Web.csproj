@@ -27,22 +27,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
   </ItemGroup>
-
-  <Target Name="CopyONNXModel" AfterTargets="Build">
-	<Copy SourceFiles="..\..\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\sentence_transformer.onnx" DestinationFolder="$(OutputPath)" />
-  </Target>
-
-  <Target Name="CopyMlVocab" AfterTargets="Build">
-	<Copy SourceFiles="..\..\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\vocab.txt" DestinationFolder="$(OutputPath)" />
-  </Target>
-
-  <Target Name="CopyONNXModel" AfterTargets="Publish">
-	<Copy SourceFiles="..\..\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\sentence_transformer.onnx" DestinationFolder="$(PublishDir)" />
-  </Target>
-
-	<Target Name="CopyMlVocab" AfterTargets="Publish">
-		<Copy SourceFiles="..\..\OE.Tudasbazis.Logic\Services\EmbeddingService\Models\vocab.txt" DestinationFolder="$(PublishDir)" />
-	</Target>
 	
   <ItemGroup>
     <Folder Include="wwwroot\bootstrap\" />

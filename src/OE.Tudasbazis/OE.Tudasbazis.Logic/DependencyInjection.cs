@@ -3,10 +3,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
 using OE.Tudasbazis.Application.Services;
-using OE.Tudasbazis.Application.Services.EmbeddingService;
 using OE.Tudasbazis.Logic.Services;
-using OE.Tudasbazis.Logic.Services.EmbeddingService;
-using OE.Tudasbazis.Logic.Services.EmbeddingService.TokenizerService;
 
 namespace OE.Tudasbazis.Logic
 {
