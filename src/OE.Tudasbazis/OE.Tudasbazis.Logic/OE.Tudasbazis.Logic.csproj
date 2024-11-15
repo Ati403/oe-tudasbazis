@@ -11,10 +11,7 @@
     <PackageReference Include="Azure.AI.OpenAI" Version="2.0.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.9" />
-    <PackageReference Include="FastBertTokenizer" Version="1.0.28" />
-    <PackageReference Include="Microsoft.ML" Version="3.0.1" />
-    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.19.2" />
-    <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
     <PackageReference Include="PdfPig" Version="0.1.9" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
   </ItemGroup>
@@ -23,10 +20,6 @@
     <ProjectReference Include="..\OE.Tudasbazis.Application\OE.Tudasbazis.Application.csproj" />
     <ProjectReference Include="..\OE.Tudasbazis.DataAccess\OE.Tudasbazis.DataAccess.csproj" />
     <ProjectReference Include="..\OE.Tudasbazis.Domain\OE.Tudasbazis.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-	<None Include="Services\EmbeddingService\Models\sentence_transformer.onnx" />
   </ItemGroup>
 
 </Project>

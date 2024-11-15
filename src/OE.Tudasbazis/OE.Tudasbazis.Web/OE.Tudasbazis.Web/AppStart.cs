@@ -109,8 +109,8 @@ namespace OE.Tudasbazis.Web
 				.ValidateDataAnnotations()
 				.ValidateOnStart();
 
-			services.AddOptions<EmbeddingModelSettings>()
-				.Bind(configuration.GetSection(EmbeddingModelSettings.Section))
+			services.AddOptions<EmbeddingApiSettings>()
+				.Bind(configuration.GetSection(EmbeddingApiSettings.Section))
 				.ValidateDataAnnotations()
 				.ValidateOnStart();
 
