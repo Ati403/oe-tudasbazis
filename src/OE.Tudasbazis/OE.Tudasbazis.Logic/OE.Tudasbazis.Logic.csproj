@@ -11,6 +11,7 @@
     <PackageReference Include="Azure.AI.OpenAI" Version="2.0.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.9" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
     <PackageReference Include="PdfPig" Version="0.1.9" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
   </ItemGroup>

@@ -1,6 +1,5 @@
 using OE.Tudasbazis.Application.DTOs.Responses;
 using OE.Tudasbazis.Application.Services;
-using OE.Tudasbazis.Application.Services.EmbeddingService;
 using OE.Tudasbazis.DataAccess;
 using OE.Tudasbazis.Domain.Entities;
 
@@ -25,7 +24,7 @@ namespace OE.Tudasbazis.Logic.Services
 
 		public async Task<SearchResultDto> GetAnswerAsync(string question, Guid? userId)
 		{
-			float[] questionEmbedding = _embeddingService.GetEmbeddings(question);
+			float[] questionEmbedding = await _embeddingService.GetEmbeddingsAsync(question);
 
 			var elasticDocuments = await _elasticService.SearchAsync(questionEmbedding);
 

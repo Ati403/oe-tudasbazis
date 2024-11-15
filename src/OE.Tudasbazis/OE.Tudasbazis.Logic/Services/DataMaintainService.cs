@@ -1,7 +1,6 @@
 using OE.Tudasbazis.Application.DTOs.Service;
 using OE.Tudasbazis.Application.Exceptions;
 using OE.Tudasbazis.Application.Services;
-using OE.Tudasbazis.Application.Services.EmbeddingService;
 
 namespace OE.Tudasbazis.Logic.Services
 {
@@ -20,7 +19,7 @@ namespace OE.Tudasbazis.Logic.Services
 
 		public async Task UploadStringToVectorDatabaseAsync(string text)
 		{
-			var elasticDocument = GenerateElasticDocuments([text]);
+			var elasticDocument = await GenerateElasticDocuments([text]);
 
 			await UploadDocumentToVectorDatabase(elasticDocument);
 		}
@@ -31,7 +30,7 @@ namespace OE.Tudasbazis.Logic.Services
 
 			var textsToUpload = _pdfProcessorService.ProcessPdf(pdfStream);
 
-			var elasticDocuments = GenerateElasticDocuments(textsToUpload);
+			var elasticDocuments = await GenerateElasticDocuments(textsToUpload);
 
 			await UploadDocumentToVectorDatabase(elasticDocuments);
 		}
@@ -46,16 +45,22 @@ namespace OE.Tudasbazis.Logic.Services
 			}
 		}
 
-		private IEnumerable<ElasticDocument> GenerateElasticDocuments(List<string> texts)
+		private async Task<List<ElasticDocument>> GenerateElasticDocuments(List<string> texts)
 		{
+			var elasticDocuments = new List<ElasticDocument>();
+
 			foreach (string text in texts)
 			{
-				yield return new ElasticDocument
+				var elasticDocument = new ElasticDocument
 				{
 					Text = text,
-					Vector = _embeddingService.GetEmbeddings(text),
+					Vector = await _embeddingService.GetEmbeddingsAsync(text),
 				};
+
+				elasticDocuments.Add(elasticDocument);
 			}
+
+			return elasticDocuments;
 		}
 
 		private async Task UploadDocumentToVectorDatabase(IEnumerable<ElasticDocument> elasticDocuments)

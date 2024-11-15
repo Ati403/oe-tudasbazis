@@ -12,7 +12,6 @@ namespace OE.Tudasbazis.Logic
 		public static IServiceCollection AddLogic(this IServiceCollection services)
 		{
 			services.AddSingleton<IJwtService, JwtService>();
-			services.AddSingleton<IEmbeddingService, EmbeddingService>();
 
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IAuthService, AuthService>();
@@ -20,9 +19,9 @@ namespace OE.Tudasbazis.Logic
 			services.AddScoped<IDataMaintainService, DataMaintainService>();
 			services.AddScoped<ISearchService, SearchService>();
 
-			services.AddTransient<ITokenizerServiceFactory, TokenizerServiceFactory>();
 			services.AddTransient<IPdfProcessorService, PdfProcessorService>();
 			services.AddTransient<IOpenAiService, OpenAiService>();
+			services.AddTransient<IEmbeddingService, EmbeddingService>();
 
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			return services;
