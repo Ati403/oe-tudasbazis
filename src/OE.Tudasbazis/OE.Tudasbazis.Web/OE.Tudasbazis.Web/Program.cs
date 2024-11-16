@@ -1,6 +1,5 @@
 using OE.Tudasbazis.Web;
 using OE.Tudasbazis.Web.Middlewares;
-using OE.Tudasbazis.Web.Client.Components;
 
 internal class Program
 {
@@ -44,7 +43,7 @@ internal class Program
 
 		app.UseStaticFiles();
 
-		app.MapRazorComponents<App>()
+		app.MapRazorComponents<OE.Tudasbazis.Web.Client.Components.App>()
 			.AddInteractiveWebAssemblyRenderMode();
 
 		app.UseRouting();
