@@ -6,10 +6,10 @@ namespace OE.Tudasbazis.Web.Middlewares
 {
 	public static class RateLimitingHelper
 	{
-		public static List<string> LimitedEndpoints = new List<string>
-		{
+		public static List<string> LimitedEndpoints { get; } =
+		[
 			nameof(SearchController.GetAnswer)
-		};
+		];
 	}
 
 	public class RateLimitingMiddleware
@@ -28,7 +28,7 @@ namespace OE.Tudasbazis.Web.Middlewares
 			var endpoint = context.GetEndpoint();
 
 			if (endpoint == null
-				|| !RateLimitingHelper.LimitedEndpoints.Exists(endpoint.DisplayName!.Contains))
+				|| !RateLimitingHelper.LimitedEndpoints.Exists((endpoint.DisplayName ?? string.Empty).Contains))
 			{
 				await _next(context);
 				return;

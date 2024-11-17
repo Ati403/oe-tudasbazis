@@ -1,60 +1,71 @@
-/* Styles for the page container */
-.page-container {
+.home-container {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
-	height: 100vh;
-	padding: 2rem;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	padding: 10px;
+	padding-top: 20px;
 	color: white;
+	row-gap: 20px;
 }
 
-/* Styles for the text output (top) */
-.text-output {
-	flex-grow: 0;
+.input-container {
 	display: flex;
+	flex-wrap: nowrap;
 	justify-content: center;
-	align-items: flex-start;
-	text-align: center;
-	width: 100%;
-	color:white;
-}
-
-/* Styles for the text input (bottom) */
-.text-input {
-	flex-grow: 0;
-	display: flex;
-	justify-content: center;
-	align-items: flex-end;
+	align-items: center;
+	gap: 15px;
 	width: 100%;
 }
 
-.text-input-box {
+.user-input-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 90%;
+}
+
+.user-input {
 	background-color: #222;
-	border: 2px solid green;
+	border: 2px solid black;
 	color: white;
+	background-color: #222222;
+	overflow-y: hidden;
+	resize: none;
 }
 
-	/* Style for the input field */
-	.text-input input {
-		width: 300px;
-		padding: 0.5rem;
-		font-size: 1rem;
-		border-radius: 5px;
-		border: 1px solid black;
-
-	}
-
-.image-overlay {
-	position: absolute;
-	top: 45%;
-	left: 50%;
-	transform: translate(-50%, -50%); /* Adjust position to truly center it */
-	z-index: 10; /* Ensures it is overlaid above other content */
+.user-input-container textarea {
+	padding: 0.5rem;
+	font-size: 1rem;
+	border-radius: 5px;
+	border: 1px solid black;
+	width: 100%;
 }
 
-	.image-overlay img {
-		width: 1000px;
-		height: auto;
-		opacity: 0.7;
+.search-button {
+	cursor: pointer;
+	border-radius: 75%;
+	border-color: #000000;
+	width: 45px;
+	height: 45px;
+}
+
+	.search-button:hover {
+		background-color: #222222;
+		color: white;
+		border-color: white;
 	}
+
+.response-box {
+	padding: 1rem;
+	padding-bottom: 0px;
+	background-color: #222222;
+	border: 2px solid black;
+	border-radius: 8px;
+	color: white;
+	margin: 1rem 0;
+	text-align: center;
+}
