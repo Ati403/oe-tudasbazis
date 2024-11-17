@@ -10,35 +10,51 @@
 @inject NavigationManager NavManager
 @inject IToastService Toaster
 
+@using BlazorBootstrap;
+
 <PageTitle>Felhasználó</PageTitle>
 
 <Blazored.Toast.BlazoredToasts />
 
-<h3>Bejelentkezés</h3>
+<div class="login-container">
+    <h3>Bejelentkezés</h3>
 
-<EditForm Model="LoginOrRequestDto" OnValidSubmit="HandleLoginAsync">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+    <EditForm Model="LoginOrRequestDto" OnValidSubmit="HandleLoginAsync">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <div class="mb-3">
-        <label for="username">Felhasználónév</label>
-        <input id="username" @bind="LoginOrRequestDto.Username" class="form-control user-input" />
-    </div>
+        <div class="mb-3">
+            <label for="username">Felhasználónév</label>
+            <input id="username" @bind="LoginOrRequestDto.Username" class="form-control user-input" />
+        </div>
 
-    <div class="mb-3">
-        <label for="password">Jelszó</label>
-        <input id="password" @bind="LoginOrRequestDto.Password" type="password" class="form-control user-input" />
-    </div>
+        <div class="mb-3">
+            <label for="password">Jelszó</label>
+            <input id="password" @bind="LoginOrRequestDto.Password" type="password" class="form-control user-input" />
+        </div>
 
-    <button type="submit" class="btn btn-primary">Bejelentkezés</button>
-</EditForm> 
+        @if (IsLoading)
+        {
+            <div>
+                <Spinner Type="SpinnerType.Border" Color="SpinnerColor.Primary" />
+            </div>
+        }
+
+        <div>
+            <button disabled="@IsLoading" type="submit" class="btn btn-primary login-button">Bejelentkezés</button>
+        </div>
+    </EditForm>
+</div>
 
 @code {
     private LoginOrRegisterRequestDto LoginOrRequestDto { get; set; } = new();
-    private string LoginError { get; set; } = string.Empty;
+    private bool IsLoading { get; set; } = false;
 
     private async Task HandleLoginAsync()
     {
+        IsLoading = true;
+        StateHasChanged();
+
         try
         {
             var result = await Http.PostAsJsonAsync<LoginOrRegisterRequestDto>("api/Auth/Login", LoginOrRequestDto);
@@ -72,6 +88,10 @@
         }
 
         await CheckAuthState();
+
+        IsLoading = false;
+        LoginOrRequestDto = new();
+        StateHasChanged();
     }
 
     private async Task CheckAuthState()
