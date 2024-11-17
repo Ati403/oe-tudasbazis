@@ -15,6 +15,13 @@
         </div>
     }
 
+    @if (IsLoading)
+    {
+        <div class="loading-indicator">
+            <Spinner Type="SpinnerType.Border" Color="SpinnerColor.Primary"/>
+        </div>
+    }
+
     <div class="input-container">
         <div class="user-input-container">
             <textarea class="user-input"
@@ -35,15 +42,44 @@
 </div>
 
 @code {
-    private string UserInput { get; set; }
-    private string ApiResponse { get; set; }
+    private string UserInput { get; set; } = string.Empty;
+    private string? ApiResponse { get; set; }
+    private bool IsLoading { get; set; } = false;
 
-    private void GetAnswerAsync()
+    private async void GetAnswerAsync()
     {
-        //TODO
-        //Implement search endpoint api calls
-
-        ApiResponse = $"Válasz: {UserInput}";
+        IsLoading = true;
         StateHasChanged();
+
+        try
+        {
+            var searchRequestDto = new AnswerRequestDto
+                {
+                    Question = UserInput
+                };
+
+            var response = await HttpClient.PostAsJsonAsync(new Uri("api/Search/answer", UriKind.Relative), searchRequestDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var searchResult = await response.Content.ReadFromJsonAsync<SearchResultDto>();
+
+                if (searchResult is not null)
+                {
+                    ApiResponse = searchResult.Answer;
+                }
+            }
+        }
+        catch (Exception)
+        {
+            //TODO
+            //Toaster error handling
+            ApiResponse = "Hiba a válaszadás során.";
+        }
+        finally
+        {
+            IsLoading = false;
+            StateHasChanged();
+        }
     }
 }

@@ -24,4 +24,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\OE.Tudasbazis.Application\OE.Tudasbazis.Application.csproj" />
+  </ItemGroup>
+
 </Project>
