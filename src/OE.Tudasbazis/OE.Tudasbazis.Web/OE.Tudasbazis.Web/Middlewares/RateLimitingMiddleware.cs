@@ -28,7 +28,7 @@ namespace OE.Tudasbazis.Web.Middlewares
 			var endpoint = context.GetEndpoint();
 
 			if (endpoint == null
-				|| !RateLimitingHelper.LimitedEndpoints.Exists(endpoint.DisplayName!.Contains))
+				|| !RateLimitingHelper.LimitedEndpoints.Exists((endpoint.DisplayName ?? string.Empty).Contains))
 			{
 				await _next(context);
 				return;
