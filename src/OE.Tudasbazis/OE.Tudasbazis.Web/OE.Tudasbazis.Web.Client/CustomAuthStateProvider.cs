@@ -1,8 +1,9 @@
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.Authorization;
-using Blazored.LocalStorage;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
+using Blazored.LocalStorage;
+
+using Microsoft.AspNetCore.Components.Authorization;
 
 public class CustomAuthStateProvider : AuthenticationStateProvider
 {
