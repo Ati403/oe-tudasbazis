@@ -13,12 +13,9 @@
 
 <h3>Login</h3>
 
-@*
-    TODO: Try to fix
-*@
-@* <EditForm Model="User" OnValidSubmit="HandleLoginAsync">
+<EditForm Model="User" OnValidSubmit="HandleLoginAsync">
     <DataAnnotationsValidator />
-    <ValidationSummary /> *@
+    <ValidationSummary />
 
     <div class="mb-3">
         <label for="username">Name</label>
@@ -30,9 +27,8 @@
         <InputText id="password" @bind-Value="User.Password" type="password" class="form-control" />
     </div>
 
-    @* <button type="submit" class="btn btn-primary">Do it!</button> *@
-    <button type="button" @onclick="HandleLoginAsync" class="btn btn-primary">Do it!</button>
-@* </EditForm> *@
+    <button type="submit" class="btn btn-primary">Do it!</button>
+</EditForm> 
 
 @code {
     private LoginOrRegisterRequestDto User { get; set; } = new();
@@ -40,8 +36,6 @@
 
     private async Task HandleLoginAsync()
     {
-        // Toaster.ShowSuccess("test");
-
         try
         {
             var result = await Http.PostAsJsonAsync<LoginOrRegisterRequestDto>("api/Auth/Login", User);
@@ -53,9 +47,13 @@
                 if (jwtDto is not null)
                 {
                     await LocalStorage.SetItemAsync("TOKEN", jwtDto.Token);
-                    var state = await AuthStateProvider.GetAuthenticationStateAsync();
+                    if (AuthStateProvider is CustomAuthStateProvider customProvider)
+                    {
+                        Console.WriteLine("Marked as logged in");
+                        customProvider.MarkUserAsAuthenticated(jwtDto.Token);
+                    }
 
-                    Toaster.ShowSucces("Logged in succesfully.");
+                    Toaster.ShowSuccess("You have successfully logged in.");
 
                     // NavManager.NavigateTo("");
                 }
@@ -63,12 +61,44 @@
             else
             {
                 LoginError = "Invalid username or password. Please try again.";
+                await LocalStorage.RemoveItemAsync("TOKEN");
+                if (AuthStateProvider is CustomAuthStateProvider customProvider)
+                {
+                    Console.WriteLine("Marked as logged out");
+                    customProvider.MarkUserAsLoggedOut();
+                }
             }
         }
         catch (Exception ex)
         {
             LoginError = "An error occurred while trying to log in. Please try again later.";
             Console.Error.WriteLine(ex.Message);
+        }
+        await CheckAuthState();
+    }
+
+    private async Task CheckAuthState()
+    {
+        try
+        {
+            // Get the current authentication state
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            if (user.Identity != null && user.Identity.IsAuthenticated)
+            {
+                // User is authenticated
+                Toaster.ShowSuccess($"User is authenticated as {user.Identity.Name}");
+            }
+            else
+            {
+                // User is not authenticated
+                Toaster.ShowWarning("User is not authenticated.");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle errors
+            Toaster.ShowError($"Error checking authentication state: {ex.Message}");
         }
     }
 }

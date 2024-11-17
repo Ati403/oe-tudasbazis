@@ -41,12 +41,12 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 		NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
 	}
 
-	public void MarkUserAsLoggedOut()
+	public async void MarkUserAsLoggedOut()
 	{
+		await _localStorage.RemoveItemAsync("TOKEN");
+
 		var identity = new ClaimsIdentity();
 		var user = new ClaimsPrincipal(identity);
-
-		//TODO: Remove token from local storage
 
 		NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
 	}
