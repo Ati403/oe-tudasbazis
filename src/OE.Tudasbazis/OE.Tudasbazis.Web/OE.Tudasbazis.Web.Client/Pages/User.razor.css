@@ -1,0 +1,17 @@
+.login-container {
+	padding: 1rem;
+}
+
+.user-input {
+	border: 2px solid black;
+	color: white;
+	background-color: #222222;
+}
+
+label, h3 {
+	color: white;
+}
+
+.login-button {
+	margin-top: 15px;
+}

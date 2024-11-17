@@ -1,0 +1,118 @@
+@page "/User"
+@using System.Security.Claims
+
+@rendermode InteractiveWebAssembly
+
+@inject ILocalStorageService LocalStorage
+@inject IConfiguration Configuration
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavManager
+@inject IToastService Toaster
+
+@using BlazorBootstrap;
+
+<PageTitle>Felhasználó</PageTitle>
+
+<Blazored.Toast.BlazoredToasts />
+
+<div class="login-container">
+    <h3>Bejelentkezés</h3>
+
+    <EditForm Model="LoginOrRequestDto" OnValidSubmit="HandleLoginAsync">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label for="username">Felhasználónév</label>
+            <input id="username" @bind="LoginOrRequestDto.Username" class="form-control user-input" />
+        </div>
+
+        <div class="mb-3">
+            <label for="password">Jelszó</label>
+            <input id="password" @bind="LoginOrRequestDto.Password" type="password" class="form-control user-input" />
+        </div>
+
+        @if (IsLoading)
+        {
+            <div>
+                <Spinner Type="SpinnerType.Border" Color="SpinnerColor.Primary" />
+            </div>
+        }
+
+        <div>
+            <button disabled="@IsLoading" type="submit" class="btn btn-primary login-button">Bejelentkezés</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private LoginOrRegisterRequestDto LoginOrRequestDto { get; set; } = new();
+    private bool IsLoading { get; set; } = false;
+
+    private async Task HandleLoginAsync()
+    {
+        IsLoading = true;
+        StateHasChanged();
+
+        try
+        {
+            var result = await Http.PostAsJsonAsync<LoginOrRegisterRequestDto>("api/Auth/Login", LoginOrRequestDto);
+
+            if (result.IsSuccessStatusCode)
+            {
+                var jwtDto = await result.Content.ReadFromJsonAsync<JwtDto>();
+
+                if (jwtDto is not null)
+                {
+                    await LocalStorage.SetItemAsync("TOKEN", jwtDto.Token);
+                    if (AuthStateProvider is CustomAuthStateProvider customProvider)
+                    {
+                        customProvider.MarkUserAsAuthenticated(jwtDto.Token);
+                    }
+                }
+            }
+            else
+            {
+                Toaster.ShowWarning("Helytelen felhasználónév, vagy jelszó.");
+
+                if (AuthStateProvider is CustomAuthStateProvider customProvider)
+                {
+                    customProvider.MarkUserAsLoggedOut();
+                }
+            }
+        }
+        catch (Exception)
+        {
+            Toaster.ShowError("Hiba a bejelenkezés során, próbáld meg később.");
+        }
+
+        await CheckAuthState();
+
+        IsLoading = false;
+        LoginOrRequestDto = new();
+        StateHasChanged();
+    }
+
+    private async Task CheckAuthState()
+    {
+        try
+        {
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity != null && user.Identity.IsAuthenticated)
+            {
+                Toaster.ShowSuccess($"Bejelentkezve {user.Claims.FirstOrDefault(c => c.Type == "unique_name")?.Value}-ként.");
+            }
+            else
+            {
+                Toaster.ShowWarning("Sikertelen azonosítás.");
+            }
+        }
+        catch (Exception)
+        {
+            Toaster.ShowError($"Hiba az azonosítás során.");
+        }
+    }
+}
