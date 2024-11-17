@@ -1,4 +1,5 @@
-@page "/Login"
+@page "/User"
+@using System.Security.Claims
 
 @rendermode InteractiveWebAssembly
 
@@ -9,36 +10,38 @@
 @inject NavigationManager NavManager
 @inject IToastService Toaster
 
+<PageTitle>Felhasználó</PageTitle>
+
 <Blazored.Toast.BlazoredToasts />
 
-<h3>Login</h3>
+<h3>Bejelentkezés</h3>
 
-<EditForm Model="User" OnValidSubmit="HandleLoginAsync">
+<EditForm Model="LoginOrRequestDto" OnValidSubmit="HandleLoginAsync">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="mb-3">
-        <label for="username">Name</label>
-        <InputText id="username" @bind-Value="User.Username" class="form-control" />
+        <label for="username">Felhasználónév</label>
+        <input id="username" @bind="LoginOrRequestDto.Username" class="form-control user-input" />
     </div>
 
     <div class="mb-3">
-        <label for="password">Password</label>
-        <InputText id="password" @bind-Value="User.Password" type="password" class="form-control" />
+        <label for="password">Jelszó</label>
+        <input id="password" @bind="LoginOrRequestDto.Password" type="password" class="form-control user-input" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Do it!</button>
+    <button type="submit" class="btn btn-primary">Bejelentkezés</button>
 </EditForm> 
 
 @code {
-    private LoginOrRegisterRequestDto User { get; set; } = new();
+    private LoginOrRegisterRequestDto LoginOrRequestDto { get; set; } = new();
     private string LoginError { get; set; } = string.Empty;
 
     private async Task HandleLoginAsync()
     {
         try
         {
-            var result = await Http.PostAsJsonAsync<LoginOrRegisterRequestDto>("api/Auth/Login", User);
+            var result = await Http.PostAsJsonAsync<LoginOrRegisterRequestDto>("api/Auth/Login", LoginOrRequestDto);
 
             if (result.IsSuccessStatusCode)
             {
@@ -49,31 +52,25 @@
                     await LocalStorage.SetItemAsync("TOKEN", jwtDto.Token);
                     if (AuthStateProvider is CustomAuthStateProvider customProvider)
                     {
-                        Console.WriteLine("Marked as logged in");
                         customProvider.MarkUserAsAuthenticated(jwtDto.Token);
                     }
-
-                    Toaster.ShowSuccess("You have successfully logged in.");
-
-                    // NavManager.NavigateTo("");
                 }
             }
             else
             {
-                LoginError = "Invalid username or password. Please try again.";
-                await LocalStorage.RemoveItemAsync("TOKEN");
+                Toaster.ShowWarning("Helytelen felhasználónév, vagy jelszó.");
+
                 if (AuthStateProvider is CustomAuthStateProvider customProvider)
                 {
-                    Console.WriteLine("Marked as logged out");
                     customProvider.MarkUserAsLoggedOut();
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            LoginError = "An error occurred while trying to log in. Please try again later.";
-            Console.Error.WriteLine(ex.Message);
+            Toaster.ShowError("Hiba a bejelenkezés során, próbáld meg később.");
         }
+
         await CheckAuthState();
     }
 
@@ -81,24 +78,21 @@
     {
         try
         {
-            // Get the current authentication state
             var authState = await AuthStateProvider.GetAuthenticationStateAsync();
             var user = authState.User;
+
             if (user.Identity != null && user.Identity.IsAuthenticated)
             {
-                // User is authenticated
-                Toaster.ShowSuccess($"User is authenticated as {user.Identity.Name}");
+                Toaster.ShowSuccess($"Bejelentkezve {user.Claims.FirstOrDefault(c => c.Type == "unique_name")?.Value}-ként.");
             }
             else
             {
-                // User is not authenticated
-                Toaster.ShowWarning("User is not authenticated.");
+                Toaster.ShowWarning("Sikertelen azonosítás.");
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // Handle errors
-            Toaster.ShowError($"Error checking authentication state: {ex.Message}");
+            Toaster.ShowError($"Hiba az azonosítás során.");
         }
     }
 }

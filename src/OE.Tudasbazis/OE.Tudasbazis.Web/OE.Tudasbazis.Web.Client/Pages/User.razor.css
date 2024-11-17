@@ -1,0 +1,9 @@
+.user-input {
+	border: 2px solid black;
+	color: white;
+	background-color: #222222;
+}
+
+label, h3 {
+	color: white;
+}

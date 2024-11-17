@@ -49,15 +49,14 @@
 
 .nav-item {
 	font-size: 0.9rem;
-	padding-bottom: 0.5rem;
 }
 
 	.nav-item:first-of-type {
-		padding-top: 1rem;
+		padding-top: 0.5rem;
 	}
 
 	.nav-item:last-of-type {
-		padding-bottom: 1rem;
+		padding-bottom: 0.5rem;
 	}
 
 	.nav-item ::deep .nav-link {
@@ -107,4 +106,8 @@
 		height: calc(100vh - 3.5rem);
 		overflow-y: auto;
 	}
+}
+
+.nav-icon {
+	margin-right: 10px;
 }

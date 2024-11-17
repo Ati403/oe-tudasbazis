@@ -13,13 +13,7 @@ internal class Program
 		var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 		builder.Services.AddBlazorBootstrap();
-
-		builder.Services.AddScoped(http => new HttpClient
-		builder.RootComponents.Add<App>("#app");
-		builder.RootComponents.Add<HeadOutlet>("head::after");
-
-		builder.Services.AddBlazoredToast(); //Toast notifications
-
+		builder.Services.AddBlazoredToast();
 		builder.Services.AddBlazoredLocalStorage();
 
 		builder.Services.AddAuthorizationCore();

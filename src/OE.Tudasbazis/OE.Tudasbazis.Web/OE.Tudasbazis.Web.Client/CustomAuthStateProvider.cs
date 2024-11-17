@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.LocalStorage;
+using System.IdentityModel.Tokens.Jwt;
 
 public class CustomAuthStateProvider : AuthenticationStateProvider
 {
@@ -21,13 +22,10 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 			return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 		}
 
-		// Create claims based on the token and create a ClaimsPrincipal
-		var claims = new List<Claim>
-		{
-			// Add your claims here, for example:
-			// new Claim(ClaimTypes.Name, "username from token"),
-		};
-		var identity = new ClaimsIdentity(claims, "jwt");
+		var handler = new JwtSecurityTokenHandler();
+		var jwt = handler.ReadJwtToken(token);
+
+		var identity = new ClaimsIdentity(jwt.Claims, "jwt");
 		var user = new ClaimsPrincipal(identity);
 
 		return new AuthenticationState(user);
