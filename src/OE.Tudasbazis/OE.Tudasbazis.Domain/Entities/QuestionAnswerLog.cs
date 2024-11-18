@@ -19,5 +19,8 @@ namespace OE.Tudasbazis.Domain.Entities
 
 		[ForeignKey(nameof(UserId))]
 		public User User { get; set; } = default!;
+
+		[Required]
+		public DateTime CreatedAt { get; set; } = DateTime.Now;
 	}
 }
