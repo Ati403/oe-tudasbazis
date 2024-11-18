@@ -25,5 +25,12 @@ namespace OE.Tudasbazis.Application.Services
 		/// <exception cref="BusinessLogicException">Thrown when the user does not exist or the password is incorrect.</exception>
 		/// <returns>The logged-in user information.</returns>
 		Task<LoggedInUserDto> AuthenticateUserAsync(LoginOrRegisterRequestDto loginDto);
+
+		/// <summary>
+		///    Get the question-answer history of a user.
+		/// </summary>
+		/// <param name="userId"> ID of the logged-in user. </param>
+		/// <returns> A list of question-answer pairs of the logged-in user. </returns>
+		Task<List<QuestionAnswerHistoryDto>> GetQuestionAnswerHistoryAsync(Guid userId);
 	}
 }

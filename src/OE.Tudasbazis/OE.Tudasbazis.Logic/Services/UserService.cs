@@ -1,5 +1,6 @@
 
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -53,6 +54,20 @@ namespace OE.Tudasbazis.Logic.Services
 			}
 
 			return _mapper.Map<LoggedInUserDto>(user);
+		}
+
+		public async Task<List<QuestionAnswerHistoryDto>> GetQuestionAnswerHistoryAsync(Guid userId)
+		{
+			var user = await _context.Users
+				.FirstOrDefaultAsync(u => u.Id == userId)
+					?? throw new BusinessLogicException("User not found.") { StatusCode = 400 };
+
+			var questionAnswerLogs = await _context.QuestionAnswerLogs
+				.Where(q => q.UserId == userId)
+				.ProjectTo<QuestionAnswerHistoryDto>(_mapper.ConfigurationProvider)
+				.ToListAsync();
+
+			return questionAnswerLogs;
 		}
 	}
 }
