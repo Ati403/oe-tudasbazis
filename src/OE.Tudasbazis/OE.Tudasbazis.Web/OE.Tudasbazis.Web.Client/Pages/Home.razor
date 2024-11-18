@@ -1,7 +1,9 @@
 @page "/"
 @using BlazorBootstrap;
 
+@inject ILocalStorageService LocalStorageService
 @inject HttpClient HttpClient
+@inject AuthenticationStateProvider AuthStateProvider
 
 <PageTitle>Főoldal</PageTitle>
 
