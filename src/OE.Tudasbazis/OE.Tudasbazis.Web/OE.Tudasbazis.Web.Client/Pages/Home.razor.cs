@@ -1,4 +1,7 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+
+using Blazored.LocalStorage;
 
 using Microsoft.AspNetCore.Components;
 
@@ -25,6 +28,15 @@ namespace OE.Tudasbazis.Web.Client.Pages
 				{
 					Question = UserInput
 				};
+
+				var authState = await ((CustomAuthStateProvider)AuthStateProvider).GetAuthenticationStateAsync();
+
+				if (authState.User.Identity?.IsAuthenticated ?? false)
+				{
+					string token = await LocalStorageService.GetItemAsync<string>("TOKEN") ?? string.Empty;
+
+					HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+				}
 
 				var response = await HttpClient.PostAsJsonAsync(new Uri("api/Search/answer", UriKind.Relative), searchRequestDto);
 
