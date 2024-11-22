@@ -16,103 +16,78 @@
 
 <Blazored.Toast.BlazoredToasts />
 
-<div class="login-container">
-    <h3>Bejelentkezés</h3>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <p>A</p>
+        </Authorized>
+        <NotAuthorized Context="authContext">
+            <div class="form-container">
+                <h3>Bejelentkezés</h3>
 
-    <EditForm Model="LoginOrRequestDto" OnValidSubmit="HandleLoginAsync">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+                <EditForm Model="LoginRequestDto" OnValidSubmit="HandleLoginAsync">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
 
-        <div class="mb-3">
-            <label for="username">Felhasználónév</label>
-            <input id="username" @bind="LoginOrRequestDto.Username" class="form-control user-input" />
-        </div>
+                    <div class="mb-3">
+                        <label for="username">Felhasználónév</label>
+                        <input id="username" @bind="LoginRequestDto.Username" class="form-control user-input" />
+                    </div>
 
-        <div class="mb-3">
-            <label for="password">Jelszó</label>
-            <input id="password" @bind="LoginOrRequestDto.Password" type="password" class="form-control user-input" />
-        </div>
+                    <div class="mb-3">
+                        <label for="password">Jelszó</label>
+                        <input id="password" @bind="LoginRequestDto.Password" type="password" class="form-control user-input" />
+                    </div>
 
-        @if (IsLoading)
-        {
-            <div>
-                <Spinner Type="SpinnerType.Border" Color="SpinnerColor.Primary" />
-            </div>
-        }
-
-        <div>
-            <button disabled="@IsLoading" type="submit" class="btn btn-primary login-button">Bejelentkezés</button>
-        </div>
-    </EditForm>
-</div>
-
-@code {
-    private LoginOrRegisterRequestDto LoginOrRequestDto { get; set; } = new();
-    private bool IsLoading { get; set; } = false;
-
-    private async Task HandleLoginAsync()
-    {
-        IsLoading = true;
-        StateHasChanged();
-
-        try
-        {
-            var result = await Http.PostAsJsonAsync<LoginOrRegisterRequestDto>("api/Auth/Login", LoginOrRequestDto);
-
-            if (result.IsSuccessStatusCode)
-            {
-                var jwtDto = await result.Content.ReadFromJsonAsync<JwtDto>();
-
-                if (jwtDto is not null)
-                {
-                    await LocalStorage.SetItemAsync("TOKEN", jwtDto.Token);
-                    if (AuthStateProvider is CustomAuthStateProvider customProvider)
+                    @if (IsLoginLoading)
                     {
-                        customProvider.MarkUserAsAuthenticated(jwtDto.Token);
+                        <div>
+                            <Spinner Type="SpinnerType.Border" Color="SpinnerColor.Primary" />
+                        </div>
                     }
-                }
-            }
-            else
-            {
-                Toaster.ShowWarning("Helytelen felhasználónév, vagy jelszó.");
 
-                if (AuthStateProvider is CustomAuthStateProvider customProvider)
-                {
-                    customProvider.MarkUserAsLoggedOut();
-                }
-            }
-        }
-        catch (Exception)
-        {
-            Toaster.ShowError("Hiba a bejelenkezés során, próbáld meg később.");
-        }
+                    <div>
+                        <button disabled="@IsLoginLoading" type="submit" class="btn btn-primary login-button">Bejelentkezés</button>
+                    </div>
+                </EditForm>
+            </div>
 
-        await CheckAuthState();
+            <hr />
 
-        IsLoading = false;
-        LoginOrRequestDto = new();
-        StateHasChanged();
-    }
+            <div class="form-container">
+                <h3>Regisztráció</h3>
 
-    private async Task CheckAuthState()
-    {
-        try
-        {
-            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-            var user = authState.User;
+                <EditForm Model="RegisterModel" OnValidSubmit="HandleRegisterAsync">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
 
-            if (user.Identity != null && user.Identity.IsAuthenticated)
-            {
-                Toaster.ShowSuccess($"Bejelentkezve {user.Claims.FirstOrDefault(c => c.Type == "unique_name")?.Value}-ként.");
-            }
-            else
-            {
-                Toaster.ShowWarning("Sikertelen azonosítás.");
-            }
-        }
-        catch (Exception)
-        {
-            Toaster.ShowError($"Hiba az azonosítás során.");
-        }
-    }
-}
+                    <div class="mb-3">
+                        <label for="username">Felhasználónév</label>
+                        <input id="username" @bind="RegisterModel.Username" class="form-control user-input" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password">Jelszó</label>
+                        <input id="password" @bind="RegisterModel.Password" type="password" class="form-control user-input" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password">Jelszó újra</label>
+                        <input id="password-again" @bind="RegisterModel.PasswordAgain" type="password" class="form-control user-input" />
+                    </div>
+
+                    @if (IsRegisterLoading)
+                    {
+                        <div>
+                            <Spinner Type="SpinnerType.Border" Color="SpinnerColor.Primary" />
+                        </div>
+                    }
+
+                    <div>
+                        <button disabled="@IsRegisterLoading" type="submit" class="btn btn-primary login-button">Regisztráció</button>
+                    </div>
+                </EditForm>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>

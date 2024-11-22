@@ -50,7 +50,7 @@ namespace OE.Tudasbazis.Logic.Services
 
 			if (user is null || !BC.Verify(loginDto.Password, user.Password))
 			{
-				throw new BusinessLogicException("Invalid username or password.") { StatusCode = 401 };
+				throw new BusinessLogicException("Helytelen felhasználónév vagy jelszó.") { StatusCode = 401 };
 			}
 
 			return _mapper.Map<LoggedInUserDto>(user);
@@ -60,7 +60,7 @@ namespace OE.Tudasbazis.Logic.Services
 		{
 			var user = await _context.Users
 				.FirstOrDefaultAsync(u => u.Id == userId)
-					?? throw new BusinessLogicException("User not found.") { StatusCode = 400 };
+					?? throw new BusinessLogicException("A megadott felhasználó nem létezik.") { StatusCode = 400 };
 
 			var questionAnswerLogs = await _context.QuestionAnswerLogs
 				.Where(q => q.UserId == userId)
