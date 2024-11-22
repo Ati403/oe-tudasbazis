@@ -23,7 +23,7 @@ namespace OE.Tudasbazis.Logic.Services
 
 			if (isUserExists)
 			{
-				throw new BusinessLogicException("User with the given username already exists.");
+				throw new BusinessLogicException("A megadott felhasználónévvel már létezik felhasználó.");
 			}
 
 			await _userService.RegisterUserAsync(userCreationDto);
