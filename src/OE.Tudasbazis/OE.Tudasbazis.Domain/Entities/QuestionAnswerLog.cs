@@ -21,6 +21,11 @@ namespace OE.Tudasbazis.Domain.Entities
 		public User User { get; set; } = default!;
 
 		[Required]
-		public DateTime CreatedAt { get; set; } = DateTime.Now;
+		public DateTime CreatedAt { get; set; } =
+#if !DEBUG
+			DateTime.Now.AddHours(1);
+#else
+			DateTime.Now;
+#endif
 	}
 }
