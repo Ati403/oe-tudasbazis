@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 using Microsoft.AspNetCore.Components;
@@ -20,6 +22,9 @@ namespace OE.Tudasbazis.Web.Client.Pages
 
 		[CascadingParameter]
 		public Task<AuthenticationState> AuthTask { get; set; }
+
+		public List<QuestionAnswerHistoryDto> QuestionAnswerHistory { get; set; } = [];
+		public bool IsHistoryLoading { get; set; } = false;
 
 		private async Task HandleLoginAsync()
 		{
@@ -63,6 +68,8 @@ namespace OE.Tudasbazis.Web.Client.Pages
 			IsLoginLoading = false;
 			LoginRequestDto = new();
 			StateHasChanged();
+
+			await LoadHistoryAsync();
 		}
 
 		private async Task CheckAuthState()
@@ -135,6 +142,64 @@ namespace OE.Tudasbazis.Web.Client.Pages
 			string errorsConcated = string.Join(", ", error?.Errors ?? []);
 
 			Toaster.ShowWarning(errorsConcated);
+		}
+
+		protected async override Task OnInitializedAsync()
+		{
+			var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+			var user = authState.User;
+
+			if (!user.Identity.IsAuthenticated)
+			{
+				return;
+			}
+
+			await LoadHistoryAsync();
+		}
+
+		private async Task LoadHistoryAsync()
+		{
+			IsHistoryLoading = true;
+			StateHasChanged();
+
+			try
+			{
+				string token = await LocalStorage.GetItemAsync<string>("TOKEN") ?? string.Empty;
+				Http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+				var response = await Http.GetAsync("api/User/history");
+
+				if (response.IsSuccessStatusCode)
+				{
+					var historyDtos = await response.Content.ReadFromJsonAsync<List<QuestionAnswerHistoryDto>>();
+
+					if (historyDtos is not null)
+					{
+						QuestionAnswerHistory = historyDtos;
+					}
+				}
+				else if (response.StatusCode == HttpStatusCode.Unauthorized)
+				{
+					(AuthStateProvider as CustomAuthStateProvider).MarkUserAsLoggedOut();
+				}
+				else
+				{
+					await HandleError(response);
+				}
+			}
+			catch (Exception)
+			{
+				Toaster.ShowError("Hiba a kérdés-válasz előzmények betöltése során.");
+			}
+
+			IsHistoryLoading = false;
+			StateHasChanged();
+		}
+
+		private async Task HandleLogoutAsync()
+		{
+			(AuthStateProvider as CustomAuthStateProvider).MarkUserAsLoggedOut();
+			StateHasChanged();
 		}
 	}
 

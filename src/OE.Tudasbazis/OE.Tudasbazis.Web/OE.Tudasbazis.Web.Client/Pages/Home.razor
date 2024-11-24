@@ -1,11 +1,14 @@
 @page "/"
 @using BlazorBootstrap;
 
+@inject IToastService Toaster
 @inject ILocalStorageService LocalStorageService
 @inject HttpClient HttpClient
 @inject AuthenticationStateProvider AuthStateProvider
 
 <PageTitle>Főoldal</PageTitle>
+
+<Blazored.Toast.BlazoredToasts />
 
 <div class="home-container">
 	<h1>Tedd fel a kérdésed az egyetemmel kapcsolatban</h1>
