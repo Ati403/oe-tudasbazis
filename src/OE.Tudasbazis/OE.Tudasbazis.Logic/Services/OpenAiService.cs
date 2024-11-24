@@ -33,13 +33,23 @@ namespace OE.Tudasbazis.Logic.Services
 		public async Task<string> GetAnswerAsync(string question, string answerContext)
 		{
 			ClientResult<ChatCompletion>? completion;
+
 			try
 			{
-				completion = await _openAiChatClient.CompleteChatAsync([
+				var chatOptions = new ChatCompletionOptions
+				{
+					Temperature = 0.2f,
+					MaxOutputTokenCount = 1000,
+				};
+
+				var messages = new List<ChatMessage>
+				{
 					new SystemChatMessage(SYSTEM_MESSAGE),
 					new SystemChatMessage(answerContext),
 					new UserChatMessage(question)
-				]);
+				};
+
+				completion = await _openAiChatClient.CompleteChatAsync(messages, chatOptions);
 			}
 			catch (Exception)
 			{

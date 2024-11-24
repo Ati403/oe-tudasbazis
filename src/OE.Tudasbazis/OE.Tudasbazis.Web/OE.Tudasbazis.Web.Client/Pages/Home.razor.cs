@@ -47,12 +47,21 @@ namespace OE.Tudasbazis.Web.Client.Pages
 						ApiResponse = searchResult.Answer;
 					}
 				}
+				else
+				{
+					var error = await response.Content.ReadFromJsonAsync<ErrorResponseDto>();
+
+					if (error is not null)
+					{
+						string errorsConcated = string.Join('\n', error.Errors);
+
+						Toaster.ShowError(errorsConcated);
+					}
+				}
 			}
 			catch (Exception)
 			{
-				//TODO
-				//Toaster error handling
-				ApiResponse = "Hiba a válaszadás során.";
+				Toaster.ShowError("Hiba a válaszgenerálás során.");
 			}
 			finally
 			{
