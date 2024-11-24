@@ -1,5 +1,6 @@
 
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -49,10 +50,24 @@ namespace OE.Tudasbazis.Logic.Services
 
 			if (user is null || !BC.Verify(loginDto.Password, user.Password))
 			{
-				throw new BusinessLogicException("Invalid username or password.") { StatusCode = 401 };
+				throw new BusinessLogicException("Helytelen felhasználónév vagy jelszó.") { StatusCode = 401 };
 			}
 
 			return _mapper.Map<LoggedInUserDto>(user);
+		}
+
+		public async Task<List<QuestionAnswerHistoryDto>> GetQuestionAnswerHistoryAsync(Guid userId)
+		{
+			var user = await _context.Users
+				.FirstOrDefaultAsync(u => u.Id == userId)
+					?? throw new BusinessLogicException("A megadott felhasználó nem létezik.") { StatusCode = 400 };
+
+			var questionAnswerLogs = await _context.QuestionAnswerLogs
+				.Where(q => q.UserId == userId)
+				.ProjectTo<QuestionAnswerHistoryDto>(_mapper.ConfigurationProvider)
+				.ToListAsync();
+
+			return questionAnswerLogs;
 		}
 	}
 }

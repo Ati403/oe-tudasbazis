@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 using Microsoft.AspNetCore.Components;
@@ -26,6 +27,15 @@ namespace OE.Tudasbazis.Web.Client.Pages
 					Question = UserInput
 				};
 
+				var authState = await ((CustomAuthStateProvider)AuthStateProvider).GetAuthenticationStateAsync();
+
+				if (authState.User.Identity?.IsAuthenticated ?? false)
+				{
+					string token = await LocalStorageService.GetItemAsync<string>("TOKEN") ?? string.Empty;
+
+					HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+				}
+
 				var response = await HttpClient.PostAsJsonAsync(new Uri("api/Search/answer", UriKind.Relative), searchRequestDto);
 
 				if (response.IsSuccessStatusCode)
@@ -37,12 +47,21 @@ namespace OE.Tudasbazis.Web.Client.Pages
 						ApiResponse = searchResult.Answer;
 					}
 				}
+				else
+				{
+					var error = await response.Content.ReadFromJsonAsync<ErrorResponseDto>();
+
+					if (error is not null)
+					{
+						string errorsConcated = string.Join('\n', error.Errors);
+
+						Toaster.ShowError(errorsConcated);
+					}
+				}
 			}
 			catch (Exception)
 			{
-				//TODO
-				//Toaster error handling
-				ApiResponse = "Hiba a válaszadás során.";
+				Toaster.ShowError("Hiba a válaszgenerálás során.");
 			}
 			finally
 			{

@@ -1,5 +1,10 @@
-.login-container {
+.form-container {
 	padding: 1rem;
+}
+
+hr {
+	color: white;
+	height: 2px;
 }
 
 .user-input {
@@ -14,4 +19,18 @@ label, h3 {
 
 .login-button {
 	margin-top: 15px;
+}
+
+.history-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.logout-container {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 100%;
 }
