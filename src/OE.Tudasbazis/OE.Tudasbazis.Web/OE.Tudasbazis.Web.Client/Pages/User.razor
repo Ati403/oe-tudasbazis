@@ -19,7 +19,41 @@
 <CascadingAuthenticationState>
     <AuthorizeView>
         <Authorized>
-            <p>A</p>
+            <div class="history-container">
+                @if (IsHistoryLoading)
+                {
+                    <Spinner Type="SpinnerType.Border" Color="SpinnerColor.Primary" />
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped table-dark">
+                            <thead>
+                                <tr>
+                                    <th>Kérdés</th>
+                                    <th>Válasz</th>
+                                    <th>Dátum</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in QuestionAnswerHistory)
+                                {
+                                    <tr>
+                                        <td>@item.Question</td>
+                                        <td>@item.Answer</td>
+                                        <td>@item.Timestamp</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+
+                <div class="logout-container">
+                    <button class="btn btn-primary" @onclick="HandleLogoutAsync">Kijelentkezés</button>
+                </div>
+            </div>
         </Authorized>
         <NotAuthorized Context="authContext">
             <div class="form-container">

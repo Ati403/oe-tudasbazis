@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Caching.Memory;
 
+using OE.Tudasbazis.Application.DTOs.Responses;
 using OE.Tudasbazis.Web.Controllers;
 
 namespace OE.Tudasbazis.Web.Middlewares
@@ -53,7 +54,10 @@ namespace OE.Tudasbazis.Web.Middlewares
 			if (_chache.TryGetValue(cacheKey, out bool hasAccessed))
 			{
 				context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-				await context.Response.WriteAsync("Be kell jelentkezni további kérések küldéséhez.");
+				await context.Response.WriteAsJsonAsync(new ErrorResponseDto
+				{
+					Errors = ["Be kell jelentkezni további kérések küldéséhez."]
+				});
 				return;
 			}
 
