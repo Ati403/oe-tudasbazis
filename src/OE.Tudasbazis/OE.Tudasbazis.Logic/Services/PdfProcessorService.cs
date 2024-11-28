@@ -9,7 +9,7 @@ namespace OE.Tudasbazis.Logic.Services
 {
 	public class PdfProcessorService : IPdfProcessorService
 	{
-		private const int MIN_CHUNK_SIZE = 200;
+		private const int MIN_CHUNK_SIZE = 500;
 		private const float HEADER_THRESHOLD = 0.9f;
 		private const float FOOTER_THRESHOLD = 0.1f;
 
@@ -71,12 +71,12 @@ namespace OE.Tudasbazis.Logic.Services
 		private List<string> SplitTextIntoChunks(string text)
 		{
 			var result = new List<string>();
-			string[] sentences = text.Split(['.', '!', '?'], StringSplitOptions.RemoveEmptyEntries);
+			string[] sentences = text.Split(['.', '!', '?', ' '], StringSplitOptions.RemoveEmptyEntries);
 			var currentChunk = new StringBuilder();
 
 			foreach (string sentence in sentences)
 			{
-				string trimmedSentence = sentence.Trim() + ".";
+				string trimmedSentence = sentence.Trim()/* + "."*/;
 
 				if (currentChunk.Length + trimmedSentence.Length < MIN_CHUNK_SIZE)
 				{
