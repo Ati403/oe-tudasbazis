@@ -14,5 +14,8 @@ namespace OE.Tudasbazis.Application.Settings
 
 		[Required]
 		public string Endpoint { get; set; } = string.Empty;
+
+		[Required]
+		public float Temperature { get; set; } = 0.0f;
 	}
 }

@@ -15,7 +15,7 @@ namespace OE.Tudasbazis.Logic.Services
 {
 	public partial class OpenAiService : IOpenAiService
 	{
-		private const string SYSTEM_MESSAGE = "You are a member of the university's administration team, you will receive questions from the students and you have to answer hungarian from the given context. If the given context doesn't contain the relevant answer for the received text, the answer should be: Erre a kérdésre nem tudok válaszolni. The format of the answer should be, Answer: <answer>.";
+		private const string SYSTEM_MESSAGE = "You are a member of the university's administration team, you will receive questions from the students and you have to answer only in hungarian from the given context. If the received question is not relevant to the university's topic, you shouldn't answer the question, because it's not relevant to the university. The format of the answer should be, Answer: <answer>.";
 
 		private readonly OpenAiSettings _openAiSettings;
 		private readonly ChatClient _openAiChatClient;
@@ -38,7 +38,7 @@ namespace OE.Tudasbazis.Logic.Services
 			{
 				var chatOptions = new ChatCompletionOptions
 				{
-					Temperature = 0.2f,
+					Temperature = _openAiSettings.Temperature,
 					MaxOutputTokenCount = 1000,
 				};
 
