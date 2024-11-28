@@ -36,7 +36,7 @@ namespace OE.Tudasbazis.Logic.Services
 			}
 		}
 
-		public async Task<List<ElasticDocument>> SearchAsync(float[] queryEmbedding, int topK = 5)
+		public async Task<List<ElasticDocument>> SearchAsync(float[] queryEmbedding, int topK = 15)
 		{
 			var queryResponse = await _client.SearchAsync<ElasticDocument>(s => s
 				.Query(q => q
