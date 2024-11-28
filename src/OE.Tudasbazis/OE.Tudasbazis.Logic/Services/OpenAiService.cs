@@ -38,7 +38,7 @@ namespace OE.Tudasbazis.Logic.Services
 			{
 				var chatOptions = new ChatCompletionOptions
 				{
-					Temperature = 0.2f,
+					Temperature = _openAiSettings.Temperature,
 					MaxOutputTokenCount = 1000,
 				};
 
